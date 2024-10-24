@@ -16,47 +16,46 @@ for (let i = 0; i < 7; i++) {
 }
 
 var movieArray2 = [];
-var movieArray3 = [];
-var res;
+var movieClassArray = [];
 
 fetch("https://localhost:7046/api/Movies")
   .then((response) => response.json())
   .then((responsejson) => {
-    // console.log(responsejson);
+    console.log("responsejson:");
+    console.log(responsejson);
     var responseArrayLength = responsejson.length;
+    console.log("Longitud del array:");
+    console.log(responseArrayLength);
 
-    var movie = new Movie();
-    var movieArray = [];
     for (let i = 0; i < responseArrayLength; i++) {
-      // console.log(responsejson[i].title);
-      movie.title = responsejson[i].title;
-      movieArray.push(movie);
-      movieArray2.push(<p key={"pMovieTitle" + i}>{movie.title}</p>);
+      console.log(responsejson[i].title);
+      movieArray2.push(responsejson[i].title);
     }
-    // console.log("movieArray:");
-    // console.log(movieArray);
-    console.log("movieArray2:");
+    console.log("movieArray2");
     console.log(movieArray2);
-    console.log("moviePosters:");
-    console.log(moviePosters);
+
+    for (let i = 0; i < responseArrayLength; i++) {
+      var movie = new Movie();
+      movie.title = movieArray2[i];
+      movieClassArray.push(movie);
+    }
+    console.log("movieClassArray:");
+    console.log(movieClassArray);
   });
 
-async function getMovies() {
-  //una linea
-  return await fetch("https://localhost:7046/api/Movies")
-    .then((response) => response.json())
-    .then((responsejson) => {
-      res = responsejson;
-    });
-}
+// async function getMovies() {
+//   return await fetch("https://localhost:7046/api/Movies")
+//     .then((response) => response.json())
+//     .then((responsejson) => {
+//       res = responsejson;
+//     });
+// }
 
 const Billboard = () => {
   return (
     <div>
       <div>
         <p>Aqui van los parrafos</p>
-        {/* <div>{movieArray2}</div> */}
-        <div>{res}</div>
       </div>
       <div>{moviePosters}</div>
     </div>
