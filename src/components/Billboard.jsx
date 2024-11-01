@@ -1,6 +1,6 @@
 import React from "react";
 import moviePoster from "../images/the-fly-movie-poster MV5BODcxMGMwOGEtMDUxMi00MzE5LTg4YTYtYjk1YjA4MzQxNTNlXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_.jpg";
-import { Movie } from "../Movie";
+// import { Movie } from "../Movie";
 
 const moviePosters = [];
 for (let i = 0; i < 7; i++) {
@@ -15,47 +15,45 @@ for (let i = 0; i < 7; i++) {
   );
 }
 
-var movieArray2 = [];
-var movieClassArray = [];
+var movies;
+var moviesHTML = [];
 
-fetch("https://localhost:7046/api/Movies")
-  .then((response) => response.json())
-  .then((responsejson) => {
-    console.log("responsejson:");
-    console.log(responsejson);
-    var responseArrayLength = responsejson.length;
-    console.log("Longitud del array:");
-    console.log(responseArrayLength);
+const getMovies = async () => {
+  console.log("getting movies");
 
-    for (let i = 0; i < responseArrayLength; i++) {
-      console.log(responsejson[i].title);
-      movieArray2.push(responsejson[i].title);
-    }
-    console.log("movieArray2");
-    console.log(movieArray2);
+  var responseApi = await fetch("https://localhost:7046/api/Movies");
+  movies = await responseApi.json();
+  // console.log("movies:");
+  // console.log(movies);
+  // console.log("first movie:");
+  // console.log(movies[0]);
+  // console.log("first movie title:");
+  // console.log(movies[0].title);
 
-    for (let i = 0; i < responseArrayLength; i++) {
-      var movie = new Movie();
-      movie.title = movieArray2[i];
-      movieClassArray.push(movie);
-    }
-    console.log("movieClassArray:");
-    console.log(movieClassArray);
-  });
+  var moviesArrayLength = movies.length;
+  console.log("movies array length:");
+  console.log(moviesArrayLength);
+  
+  for(let i=0; i < moviesArrayLength; i++)
+  {
+    moviesHTML.push(<p>{movies[i].title}</p>)
+  }
 
-// async function getMovies() {
-//   return await fetch("https://localhost:7046/api/Movies")
-//     .then((response) => response.json())
-//     .then((responsejson) => {
-//       res = responsejson;
-//     });
-// }
+  console.log("moviesHTML:");
+  console.log(moviesHTML);
+
+  // $("#movieList").append("<p>LISTO</p>")
+  
+};
+
+getMovies();
 
 const Billboard = () => {
   return (
     <div>
       <div>
         <p>Aqui van los parrafos</p>
+        <div id="movieList"></div>
       </div>
       <div>{moviePosters}</div>
     </div>
