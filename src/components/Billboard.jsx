@@ -15,46 +15,31 @@ for (let i = 0; i < 7; i++) {
   );
 }
 
-var movies;
-var moviesHTML = [];
-
-const getMovies = async () => {
-  console.log("getting movies");
-
-  var responseApi = await fetch("https://localhost:7046/api/Movies");
-  movies = await responseApi.json();
-  // console.log("movies:");
-  // console.log(movies);
-  // console.log("first movie:");
-  // console.log(movies[0]);
-  // console.log("first movie title:");
-  // console.log(movies[0].title);
-
-  var moviesArrayLength = movies.length;
-  console.log("movies array length:");
-  console.log(moviesArrayLength);
-  
-  for(let i=0; i < moviesArrayLength; i++)
-  {
-    moviesHTML.push(<p>{movies[i].title}</p>)
-  }
-
-  console.log("moviesHTML:");
-  console.log(moviesHTML);
-
-  // $("#movieList").append("<p>LISTO</p>")
-  
-};
-
-getMovies();
+var movies = await fetch("https://localhost:7046/api/Movies");
+var moviesjson = await movies.json();
+// console.log("moviesjson:");
+// console.log(moviesjson);
+// console.log("first movie:");
+// console.log(moviesjson[0]);
+// console.log("first movie title:");
+// console.log(moviesjson[0].title);
+var moviearray = [];
+for (let i = 0; i < moviesjson.length; i++) {
+  moviearray.push(<p key={i}>{moviesjson[i].title}</p>);
+}
 
 const Billboard = () => {
   return (
     <div>
       <div>
-        <p>Aqui van los parrafos</p>
-        <div id="movieList"></div>
+        <img
+          src={moviePoster}
+          alt="movie poster"
+          height={300}
+          style={{ margin: 10 }}
+        ></img>
       </div>
+      <div>{moviearray}</div>
       <div>{moviePosters}</div>
     </div>
   );
