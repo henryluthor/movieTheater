@@ -1,0 +1,11 @@
+.billboard-poster{
+    cursor: pointer;
+    height: 300px;
+    margin: 10px;
+    padding: 10px;
+    transition: transform .2s;    
+}
+
+.billboard-poster:hover{
+    transform: scale(1.1);
+}
