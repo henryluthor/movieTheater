@@ -4,7 +4,8 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import { companyData } from './companyData';
+// import { companyData } from './companyData';
+import companyData from './companyData.json'
 
 //Changing the title text to Company name
 let firstTitleTag = document.getElementsByTagName("title")[0];

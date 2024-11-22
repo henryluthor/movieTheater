@@ -3,11 +3,13 @@ import "./App.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Billboard from "./components/Billboard";
+import MovieInfo from "./components/MovieInfo";
 
 function App() {
   return (
     <div className="App">
       <Header />
+      {/* <MovieInfo /> */}
       <Billboard />
       <Footer />
 

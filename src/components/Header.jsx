@@ -1,5 +1,5 @@
 import React from "react";
-import { companyData } from "../companyData";
+import companyData from "../companyData.json"
 
 const Header = () => {
   return (
