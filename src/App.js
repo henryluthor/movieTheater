@@ -9,8 +9,8 @@ function App() {
   return (
     <div className="App">
       <Header />
-      {/* <MovieInfo /> */}
-      <Billboard />
+      <MovieInfo />
+      {/* <Billboard /> */}
       <Footer />
 
       {/* original code */}

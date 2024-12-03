@@ -2,9 +2,13 @@ import React from "react";
 import moviePoster from "../images/the-fly-movie-poster MV5BODcxMGMwOGEtMDUxMi00MzE5LTg4YTYtYjk1YjA4MzQxNTNlXkEyXkFqcGdeQXVyNzkwMjQ5NzM@._V1_.jpg";
 import "./Billboard.css";
 import companyData from "../companyData.json";
+import { BrowserRouter, Outlet, Link, Route, Routes } from "react-router-dom";
+import MovieInfo from "./MovieInfo";
+import MovieInfo2 from "./MovieInfo2";
 // import { Movie } from "../Movie";
 
-var movies = await fetch("https://localhost:7046/api/Movies");
+// var movies = await fetch("https://localhost:7046/api/Movies");
+var movies = await fetch(companyData.API_URL);
 var moviesjson = await movies.json();
 // console.log("moviesjson:");
 // console.log(moviesjson);
@@ -45,7 +49,7 @@ const Billboard = () => {
         <button
           type="button"
           className="btn btn-success"
-          onClick={(event) => {
+          onClick={() => {
             var x = parseInt(document.getElementById("movieIdInput").value);
             GetMovieById(x);
           }}
@@ -53,6 +57,21 @@ const Billboard = () => {
           Search
         </button>
       </div>
+
+      <BrowserRouter>
+      <Link to="/MovieInfo">Movie Info 1</Link>
+        <Routes>
+          <Route path="/MovieInfo" element={<MovieInfo/>}></Route>
+          <Route path="/MovieInfo2" element={<MovieInfo2/>}></Route>
+        </Routes>
+      </BrowserRouter>
+
+      <p>PUT HERE THE RESULT OF THE ROUTES</p>
+      {/* <Link to="/MovieInfo">Movie Info 1</Link>
+      <Link to="/MovieInfo2">Movie Info 2</Link> */}
+      
+
+      <Outlet></Outlet>
 
       <div>{moviearray}</div>
     </div>
