@@ -3,14 +3,29 @@ import "./App.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Billboard from "./components/Billboard";
-import MovieInfo from "./components/MovieInfo";
+import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from "react-router-dom";
+import PageNotFound from "./components/PageNotFound";
+import MovieDetails, { MovieDetailsLoader } from "./components/MovieDetails";
+
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <Route>
+      <Route index element={<Billboard/>}></Route>
+      <Route path="/Movie/:id" element={<MovieDetails/>} loader={MovieDetailsLoader}></Route>
+      <Route path="*" element={<PageNotFound/>}></Route>
+    </Route>
+  )
+)
 
 function App() {
   return (
+    
     <div className="App">
+
       <Header />
-      <MovieInfo />
-      {/* <Billboard /> */}
+
+      <RouterProvider router={router}/>
+
       <Footer />
 
       {/* original code */}
