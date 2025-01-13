@@ -1,0 +1,14 @@
+.MovieDetailsTitle
+{
+    color: #ffbe00;
+    font-size: 2.5em;
+}
+
+.FeatureDetailMovie
+{
+    /* border-left: 1px solid #000; */
+    border-left: 1px solid;
+    padding: 5px 9px 5px 12px;
+    display: inline-block;
+    margin-top: 5px;
+}
