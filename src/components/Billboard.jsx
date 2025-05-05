@@ -26,7 +26,7 @@ for (let i = 0; i < moviesjson.length; i++) {
       "https://api.themoviedb.org/3/find/" +
         moviesjson[i].imdbId +
         "?external_source=imdb_id&api_key=b044b7f581ea2e1e91131d95a553ec1f");
-    movieFromTMDBJson = await movieFromTMDB.json();    
+    movieFromTMDBJson = await movieFromTMDB.json();
     movieResults = movieFromTMDBJson.movie_results[0];
     posterPath = "https://image.tmdb.org/t/p/original" + movieResults.poster_path;
   }

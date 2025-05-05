@@ -6,6 +6,7 @@ import Billboard from "./components/Billboard";
 import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from "react-router-dom";
 import PageNotFound from "./components/PageNotFound";
 import MovieDetails, { MovieDetailsLoader } from "./components/MovieDetails";
+import Login from "./components/Login";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -23,6 +24,8 @@ function App() {
     <div className="App">
 
       <Header />
+
+      <Login></Login>
 
       <RouterProvider router={router}/>
 
