@@ -19,12 +19,12 @@ for (let i = 0; i < moviesjson.length; i++) {
   var movieFromTMDBJson;
   var movieResults;
   var posterPath;
-  // check if current movie in the response array has set its IMDB id to set posterPath
-  if (moviesjson[i].imdbId != null) 
+  // for each movie in the response check if it has set its IMDB id, if it does use it to set posterPath
+  if (moviesjson[i].imdbid != null) 
   {
     movieFromTMDB = await fetch(
       "https://api.themoviedb.org/3/find/" +
-        moviesjson[i].imdbId +
+        moviesjson[i].imdbid +
         "?external_source=imdb_id&api_key=b044b7f581ea2e1e91131d95a553ec1f");
     movieFromTMDBJson = await movieFromTMDB.json();
     movieResults = movieFromTMDBJson.movie_results[0];
