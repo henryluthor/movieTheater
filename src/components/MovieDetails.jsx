@@ -49,7 +49,6 @@ const MovieDetails = () => {
 
       {/* if there is movie genre show it */}
       {movie.data.genre != null && <div className='FeatureDetailMovie'>{movie.data.genre}</div>}
-
       
       <img className='poster' src={posterUrl} alt='movie poster'></img>
       

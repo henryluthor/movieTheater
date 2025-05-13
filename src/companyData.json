@@ -1,5 +1,6 @@
 {
     "companyName": "My Movie Theater",
     "API_URL": "https://localhost:7046/api/Movies",
+    "login_URL": "https://localhost:7046/api/Login",
     "imgSrcForPosterFromTMDB": "https://image.tmdb.org/t/p/original"
 }

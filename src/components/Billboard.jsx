@@ -19,7 +19,7 @@ for (let i = 0; i < moviesjson.length; i++) {
   var movieFromTMDBJson;
   var movieResults;
   var posterPath;
-  // for each movie in the response check if it has set its IMDB id, if it does use it to set posterPath
+  // for each movie in the response check if it has set its IMDB id, if it has use it to set posterPath
   if (moviesjson[i].imdbid != null) 
   {
     movieFromTMDB = await fetch(
