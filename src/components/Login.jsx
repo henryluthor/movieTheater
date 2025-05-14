@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import companyData from "../companyData.json";
 
 class Login extends Component {
@@ -34,35 +34,19 @@ class Login extends Component {
       })
         .then((resp) => resp.json())
         .then((respJson) => {
-          console.log("Resp json:");
-          console.log(respJson);
           var dto = this.state;
-
-          // this.state.isPending = false;
           dto.isPending = false;
-
-          // this.state.loginSuccessful = respJson.data.success;
           dto.loginSuccessful = respJson.data.success;
-
-          // this.state.loginMessage = respJson.message;
           dto.loginMessage = respJson.message;
 
-          if(respJson.data.success){
-            // this.state.loginSuccessful = true;
+          if (respJson.data.success) {
             dto.loginSuccessful = true;
           }
 
-          this.setState({dto});
-
-          console.log("this state loginmessage:");
-          console.log(this.state.loginMessage);
+          this.setState({ dto });
         });
-    }
-    catch (error) {
-      // console.error(error);
-      // console.error(error.message);
-      console.log("error:");
-      console.log(error);
+    } catch (error) {
+      console.error(error.message);
     }
   };
 
@@ -70,33 +54,34 @@ class Login extends Component {
     return (
       <div>
         {!this.state.loginSuccessful && (
-          <form onSubmit={this.submitForm}>
-            <label>Email</label>
-            <input
-              type="email"
-              value={this.state.email}
-              onChange={(event) => {
-                this.syncInputChanges("email", event.target.value);
-              }}
-            ></input>
-            <label>Password</label>
-            <input
-              type="password"
-              value={this.state.password}
-              onChange={(event) => {
-                this.syncInputChanges("password", event.target.value);
-              }}
-            ></input>
-            {!this.state.isPending && <button>Login</button>}
-            {this.state.isPending && <button disabled>Loading...</button>}
-          </form>
+          <div>
+            <p>Sign in</p>
+            <form onSubmit={this.submitForm}>
+              <label>Email</label>
+              <input
+                type="email"
+                value={this.state.email}
+                onChange={(event) => {
+                  this.syncInputChanges("email", event.target.value);
+                }}
+              ></input>
+              <label>Password</label>
+              <input
+                type="password"
+                value={this.state.password}
+                onChange={(event) => {
+                  this.syncInputChanges("password", event.target.value);
+                }}
+              ></input>
+              {!this.state.isPending && <button>Login</button>}
+              {this.state.isPending && <button disabled>Loading...</button>}
+            </form>
+          </div>
         )}
 
-        <p>{this.state.loginSuccessful.valueOf}</p>
+        {/* <p>{this.state.loginSuccessful.valueOf}</p> */}
 
-        {this.state.loginMessage &&
-          <p>{this.state.loginMessage}</p>
-        }
+        {this.state.loginMessage && <p>{this.state.loginMessage}</p>}
       </div>
     );
   }

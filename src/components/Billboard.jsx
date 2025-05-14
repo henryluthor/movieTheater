@@ -37,7 +37,7 @@ for (let i = 0; i < moviesjson.length; i++) {
   
 
   moviearray.push(
-    <div>
+    <div className="col-md-3">
       <img className="billboard-poster" src={posterPath} alt="movie poster"></img>
       <Link to={"/Movie/" + moviesjson[i].id}>{moviesjson[i].title}</Link>
     </div>
