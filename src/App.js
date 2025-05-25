@@ -3,6 +3,7 @@ import "./App.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Billboard from "./components/Billboard";
+import BillboardV2 from "./components/BillboardV2";
 import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from "react-router-dom";
 import PageNotFound from "./components/PageNotFound";
 import MovieDetails, { MovieDetailsLoader } from "./components/MovieDetails";
@@ -11,7 +12,7 @@ import Login from "./components/Login";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route>
-      <Route index element={<Billboard/>}></Route>
+      <Route index element={<BillboardV2/>}></Route>
       <Route path="/Movie/:id" element={<MovieDetails/>} loader={MovieDetailsLoader}></Route>
       <Route path="*" element={<PageNotFound/>}></Route>
     </Route>
