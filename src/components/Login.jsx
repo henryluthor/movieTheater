@@ -2,6 +2,7 @@ import { Component } from "react";
 import companyData from "../companyData.json";
 
 class Login extends Component {
+  
   constructor(props) {
     super(props);
     this.state = {
@@ -19,44 +20,60 @@ class Login extends Component {
     this.setState(state);
   };
 
-  submitForm = (e) => {
+  submitForm = async (e) => {
     e.preventDefault();
-    console.log("In submit");
-    this.state.isPending = true;
+    
+    console.log("is pending");
+    console.log(this.state.isPending);
 
-    console.log("this.state.email");
-    console.log(this.state.email);
-    console.log("this.state.password");
-    console.log(this.state.password);
+    var dto = this.state;
+    console.log("dto");
+    console.log(dto);
+    dto.isPending = true;
+    this.setState(dto);
+    console.log("new state");
+    console.log(this.state);
 
     try {
-      fetch(companyData.login_URL, {
+      console.log("entered try");
+
+      var resp = await fetch(companyData.login_URL, {
         method: "POST",
-        headers: { "Content-type": "application/json" },
+        headers: {"Content-type": "application/json"},
         body: JSON.stringify({
           email: this.state.email,
-          password: this.state.password,
-        }),
-      })
-      .then((resp) => resp.json())
-      .then((respJson) => {
-        console.log("The response received is:");
-        console.log(respJson);
-
-        var dto = this.state;
-        dto.isPending = false;
-        dto.loginSuccessful = respJson.data.success;
-        dto.loginMessage = respJson.message;
-
-        // if (respJson.data.success) {
-        //   dto.loginSuccessful = true;
-        // }
-
-        this.setState({ dto });
+          password: this.state.password
+        })
       });
+      // console.log("resp");
+      // console.log(resp);
+
+      var respJson = await resp.json();
+      console.log("respJson");
+      console.log(respJson);
+
+      var dtoTry = this.state;
+      dtoTry.isPending = false;
+      dtoTry.loginSuccessful = respJson.data.success;
+      dtoTry.loginMessage = respJson.message;
+      this.setState({dtoTry});
+
     }
     catch (error) {
-      console.error("There was an error while trying to login. " + error.message);
+      var catchErrorMessage = "An error ocurred while trying to login. " + error.message;
+      var dtoCatch = this.state;
+      console.log("dto entering catch");
+      console.log(dto);
+      dtoCatch.isPending = false;
+      dtoCatch.loginSuccessful = false;
+      dtoCatch.loginMessage = catchErrorMessage;
+      this.setState({dtoCatch});
+      console.log("state in catch");
+      console.log(this.state);
+      console.error(catchErrorMessage);
+    }
+    finally{
+      //
     }
   };
 
