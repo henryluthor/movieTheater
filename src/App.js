@@ -2,7 +2,6 @@ import logo from "./logo.svg";
 import "./App.css";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import Billboard from "./components/Billboard";
 import BillboardV2 from "./components/BillboardV2";
 import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from "react-router-dom";
 import PageNotFound from "./components/PageNotFound";

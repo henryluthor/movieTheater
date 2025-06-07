@@ -21,7 +21,13 @@ class Login extends Component {
 
   submitForm = (e) => {
     e.preventDefault();
+    console.log("In submit");
     this.state.isPending = true;
+
+    console.log("this.state.email");
+    console.log(this.state.email);
+    console.log("this.state.password");
+    console.log(this.state.password);
 
     try {
       fetch(companyData.login_URL, {
@@ -32,21 +38,25 @@ class Login extends Component {
           password: this.state.password,
         }),
       })
-        .then((resp) => resp.json())
-        .then((respJson) => {
-          var dto = this.state;
-          dto.isPending = false;
-          dto.loginSuccessful = respJson.data.success;
-          dto.loginMessage = respJson.message;
+      .then((resp) => resp.json())
+      .then((respJson) => {
+        console.log("The response received is:");
+        console.log(respJson);
 
-          if (respJson.data.success) {
-            dto.loginSuccessful = true;
-          }
+        var dto = this.state;
+        dto.isPending = false;
+        dto.loginSuccessful = respJson.data.success;
+        dto.loginMessage = respJson.message;
 
-          this.setState({ dto });
-        });
-    } catch (error) {
-      console.error(error.message);
+        // if (respJson.data.success) {
+        //   dto.loginSuccessful = true;
+        // }
+
+        this.setState({ dto });
+      });
+    }
+    catch (error) {
+      console.error("There was an error while trying to login. " + error.message);
     }
   };
 
@@ -79,9 +89,19 @@ class Login extends Component {
           </div>
         )}
 
-        {/* <p>{this.state.loginSuccessful.valueOf}</p> */}
+        {this.state.loginMessage && (
+          <div>
+            <p>{this.state.loginMessage}</p>
+          </div>
+        )}
 
-        {this.state.loginMessage && <p>{this.state.loginMessage}</p>}
+        {this.state.loginSuccessful && (
+          <div>
+            <button type="button">Logout</button>
+          </div>
+        )}
+
+        
       </div>
     );
   }
