@@ -80,8 +80,8 @@ const BillboardV2 = () => {
       </div>
       ) : 
       (
-      movies.map((movie) => (
-        <div>
+      movies.map((movie, index) => (
+        <div key={index}>
           {movie}
         </div>
       ))

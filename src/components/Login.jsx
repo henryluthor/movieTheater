@@ -11,7 +11,41 @@ class Login extends Component {
       isPending: false,
       loginSuccessful: false,
       loginMessage: "",
+      token: ""
     };
+  }
+
+  componentDidMount()
+  {
+    console.log("Component did mount");
+    console.log("Showing token in local storage:");
+    console.log(localStorage.getItem('token'));
+
+    console.log("State token:");
+    console.log(this.state.token);
+
+    const token = localStorage.getItem('token');
+    if(token)
+    {
+      const tokenExpiration = localStorage.getItem('tokenExpiration');
+      if(tokenExpiration && new Date(tokenExpiration) > new Date())
+      {
+        console.log("Session is active.");
+      }
+      else
+      {
+        console.log("Session is expired.");
+        localStorage.removeItem('token');
+        localStorage.removeItem('tokenExpiration');
+      }
+    }
+  }
+
+  componentDidUpdate()
+  {
+    console.log("Component has been updated.");
+    console.log("New state token:");
+    console.log(this.state.token);
   }
 
   syncInputChanges = (property, value) => {
@@ -22,21 +56,12 @@ class Login extends Component {
 
   submitForm = async (e) => {
     e.preventDefault();
-    
-    console.log("is pending");
-    console.log(this.state.isPending);
 
     var dto = this.state;
-    console.log("dto");
-    console.log(dto);
     dto.isPending = true;
     this.setState(dto);
-    console.log("new state");
-    console.log(this.state);
 
     try {
-      console.log("entered try");
-
       var resp = await fetch(companyData.login_URL, {
         method: "POST",
         headers: {"Content-type": "application/json"},
@@ -45,32 +70,31 @@ class Login extends Component {
           password: this.state.password
         })
       });
-      // console.log("resp");
-      // console.log(resp);
 
       var respJson = await resp.json();
-      console.log("respJson");
+      console.log("respJson:");
       console.log(respJson);
+
+      localStorage.setItem('token', respJson.data.token);
 
       var dtoTry = this.state;
       dtoTry.isPending = false;
       dtoTry.loginSuccessful = respJson.data.success;
       dtoTry.loginMessage = respJson.message;
+      dtoTry.token = respJson.data.token;
       this.setState({dtoTry});
+
+      console.log("State token after submit:");
+      console.log(this.state.token);
 
     }
     catch (error) {
       var catchErrorMessage = "An error ocurred while trying to login. " + error.message;
       var dtoCatch = this.state;
-      console.log("dto entering catch");
-      console.log(dto);
       dtoCatch.isPending = false;
       dtoCatch.loginSuccessful = false;
       dtoCatch.loginMessage = catchErrorMessage;
       this.setState({dtoCatch});
-      console.log("state in catch");
-      console.log(this.state);
-      console.error(catchErrorMessage);
     }
     finally{
       //
@@ -80,6 +104,7 @@ class Login extends Component {
   render() {
     return (
       <div>
+        
         {!this.state.loginSuccessful && (
           <div>
             <p>Sign in</p>
