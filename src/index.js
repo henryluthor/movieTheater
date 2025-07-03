@@ -4,6 +4,9 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+// Importing bootstrap
+import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+
 // import { companyData } from './companyData';
 import companyData from './companyData.json'
 
