@@ -81,6 +81,7 @@ const BillboardV2 = () => {
     fetchMovies();
   }, []);
 
+
   return (
     <>
       {errorMessage || isLoading ? (

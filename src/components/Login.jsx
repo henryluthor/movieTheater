@@ -17,24 +17,17 @@ class Login extends Component {
 
   componentDidMount()
   {
-    console.log("Component did mount");
-    console.log("Showing token in local storage:");
-    console.log(localStorage.getItem('token'));
-
-    console.log("State token:");
-    console.log(this.state.token);
-
     const token = localStorage.getItem('token');
     if(token)
     {
       const tokenExpiration = localStorage.getItem('tokenExpiration');
       if(tokenExpiration && new Date(tokenExpiration) > new Date())
       {
-        console.log("Session is active.");
+        // console.log("Session is active.");
       }
       else
       {
-        console.log("Session is expired.");
+        // console.log("Session is expired.");
         localStorage.removeItem('token');
         localStorage.removeItem('tokenExpiration');
       }
@@ -43,9 +36,9 @@ class Login extends Component {
 
   componentDidUpdate()
   {
-    console.log("Component has been updated.");
-    console.log("New state token:");
-    console.log(this.state.token);
+    // console.log("Component has been updated.");
+    // console.log("New state token:");
+    // console.log(this.state.token);
   }
 
   syncInputChanges = (property, value) => {
@@ -72,8 +65,6 @@ class Login extends Component {
       });
 
       var respJson = await resp.json();
-      console.log("respJson:");
-      console.log(respJson);
 
       localStorage.setItem('token', respJson.data.token);
 
@@ -83,9 +74,6 @@ class Login extends Component {
       dtoTry.loginMessage = respJson.message;
       dtoTry.token = respJson.data.token;
       this.setState({dtoTry});
-
-      console.log("State token after submit:");
-      console.log(this.state.token);
 
     }
     catch (error) {

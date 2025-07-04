@@ -7,6 +7,7 @@ import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } 
 import PageNotFound from "./components/PageNotFound";
 import MovieDetails, { MovieDetailsLoader } from "./components/MovieDetails";
 import Login from "./components/Login";
+import Complexes from "./components/Complexes";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -26,6 +27,8 @@ function App() {
       <Header />
 
       <Login></Login>
+
+      <Complexes></Complexes>
 
       <RouterProvider router={router}/>
 
