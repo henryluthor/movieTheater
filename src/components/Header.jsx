@@ -5,6 +5,7 @@ const Header = () => {
   return (
     <div>
       <h1>{companyData.companyName}</h1>
+      <a href="/">PAGINA INICIAL</a>
     </div>
   );
 };

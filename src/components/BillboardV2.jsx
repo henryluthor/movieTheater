@@ -18,6 +18,9 @@ const BillboardV2 = () => {
 
         // For each movie fetch poster
         for (let i = 0; i < moviesFromAPIJson.length; i++) {
+          console.log("moviesFromAPIJson:");
+          console.log(moviesFromAPIJson);
+
           var movieFromTMDB;
           var movieFromTMDBJson;
           var movieResults;
@@ -58,7 +61,7 @@ const BillboardV2 = () => {
                 src={posterPath}
                 alt="movie poster"
               ></img>
-              <a href={"/Movie/" + moviesFromAPIJson[i].id}>
+              <a href={"/Movie/" + moviesFromAPIJson[i].idMovie}>
                 {moviesFromAPIJson[i].title}
               </a>
               {/* <Link to={"/Movie/" + moviesFromAPIJson[i].id}>{moviesFromAPIJson[i].title}</Link> */}

@@ -1,140 +1,113 @@
-import { Component } from "react";
-import companyData from "../companyData.json";
+import { useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
 
-class Login extends Component {
-  
-  constructor(props) {
-    super(props);
-    this.state = {
-      email: "",
-      password: "",
-      isPending: false,
-      loginSuccessful: false,
-      loginMessage: "",
-      token: ""
-    };
-  }
+const Login = () => {
+  const [inputs, setInputs] = useState({});
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loginMessage, setLoginMessage] = useState(null);
+  const [loggedInUser, setLoggedInUser] = useState(null);
+  const [isPending, setIsPending] = useState(false);
 
-  componentDidMount()
-  {
-    const token = localStorage.getItem('token');
-    if(token)
-    {
-      const tokenExpiration = localStorage.getItem('tokenExpiration');
-      if(tokenExpiration && new Date(tokenExpiration) > new Date())
-      {
-        // console.log("Session is active.");
-      }
-      else
-      {
-        // console.log("Session is expired.");
-        localStorage.removeItem('token');
-        localStorage.removeItem('tokenExpiration');
-      }
-    }
-  }
-
-  componentDidUpdate()
-  {
-    // console.log("Component has been updated.");
-    // console.log("New state token:");
-    // console.log(this.state.token);
-  }
-
-  syncInputChanges = (property, value) => {
-    let state = {};
-    state[property] = value;
-    this.setState(state);
+  const handleChange = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    setInputs((values) => ({ ...values, [name]: value }));
   };
 
-  submitForm = async (e) => {
+  function isTokenValid(){
+    const token = localStorage.getItem('token');
+    if(token){
+      const decodedToken = jwtDecode(token);
+      const expirationTime = decodedToken.exp * 1000;
+      return Date.now() < expirationTime;
+    }
+    return false;
+  }
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if(token && isTokenValid()) {
+      setIsLoggedIn(true);
+      const userFromLocalStorage = localStorage.getItem('localStorageLoggedInUser');
+      if(userFromLocalStorage) {
+        setLoginMessage("Welcome " + userFromLocalStorage);
+      }
+    }
+  }, []);
+
+  const submitForm = async (e) => {
     e.preventDefault();
 
-    var dto = this.state;
-    dto.isPending = true;
-    this.setState(dto);
+    setIsPending(true);
+    setLoginMessage("");
 
     try {
-      var resp = await fetch(companyData.login_URL, {
+      var response = await fetch("https://localhost:7046/api/Login", {
         method: "POST",
-        headers: {"Content-type": "application/json"},
+        headers: { "Content-type": "application/json" },
         body: JSON.stringify({
-          email: this.state.email,
-          password: this.state.password
-        })
+          email: inputs.email,
+          password: inputs.password,
+        }),
       });
 
-      var respJson = await resp.json();
+      var responseJson = await response.json();
+      // console.log("responseJson");
+      // console.log(responseJson);
+      // console.log("token:");
+      // console.log(responseJson.data.token);
+      // console.log("responseJson.data.success:");
+      // console.log(responseJson.data.success);
 
-      localStorage.setItem('token', respJson.data.token);
+      if(responseJson.data.success) {
+        setLoginMessage("Welcome " + responseJson.data.email);
+        localStorage.setItem('token', responseJson.data.token);
+        localStorage.setItem('localStorageLoggedInUser', responseJson.data.email);
+        // localStorage.setItem('tokenExpiration', Date.now() + 60000);
+      }
+      else {
+        setLoginMessage(responseJson.message);
+      }
 
-      var dtoTry = this.state;
-      dtoTry.isPending = false;
-      dtoTry.loginSuccessful = respJson.data.success;
-      dtoTry.loginMessage = respJson.message;
-      dtoTry.token = respJson.data.token;
-      this.setState({dtoTry});
-
+      setIsLoggedIn(responseJson.data.success);
+      // console.log("isLoggedIn:");
+      // console.log(isLoggedIn); // false, why?
+      
     }
     catch (error) {
-      var catchErrorMessage = "An error ocurred while trying to login. " + error.message;
-      var dtoCatch = this.state;
-      dtoCatch.isPending = false;
-      dtoCatch.loginSuccessful = false;
-      dtoCatch.loginMessage = catchErrorMessage;
-      this.setState({dtoCatch});
+      console.error(error.message);
+      setLoginMessage(error.message);
     }
-    finally{
-      //
+    finally {
+      setIsPending(false);
     }
   };
 
-  render() {
-    return (
-      <div>
-        
-        {!this.state.loginSuccessful && (
-          <div>
-            <p>Sign in</p>
-            <form onSubmit={this.submitForm}>
-              <label>Email</label>
-              <input
-                type="email"
-                value={this.state.email}
-                onChange={(event) => {
-                  this.syncInputChanges("email", event.target.value);
-                }}
-              ></input>
-              <label>Password</label>
-              <input
-                type="password"
-                value={this.state.password}
-                onChange={(event) => {
-                  this.syncInputChanges("password", event.target.value);
-                }}
-              ></input>
-              {!this.state.isPending && <button>Login</button>}
-              {this.state.isPending && <button disabled>Loading...</button>}
-            </form>
-          </div>
-        )}
+  return (
+    <div>
+      {/* <h1>This is the Login component</h1>
+      <p>This is an example of a component for making a login process.</p> */}
 
-        {this.state.loginMessage && (
-          <div>
-            <p>{this.state.loginMessage}</p>
-          </div>
-        )}
+      {!isLoggedIn && (
+        <form onSubmit={submitForm}>
+          <label className="form-label">Email</label>
+          <input type="email" className="form-control" name="email" onChange={handleChange}></input>
+          <label className="form-label">Password</label>
+          <input type="password" className="form-control" name="password" onChange={handleChange}></input>
+          <button className="btn btn-primary my-3">Login</button>
+        </form>
+      )}
 
-        {this.state.loginSuccessful && (
-          <div>
-            <button type="button">Logout</button>
-          </div>
-        )}
+      {isPending && (
+        <button className="btn btn-primary" type="button" disabled>
+          <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
+          <span role="status">Loading...</span>
+        </button>
+      )}
 
-        
-      </div>
-    );
-  }
-}
+      {loginMessage && <p>{loginMessage}</p>}
+    </div>
+  );
+};
 
 export default Login;

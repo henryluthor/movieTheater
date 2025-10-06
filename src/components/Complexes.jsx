@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import companyData from "../companyData.json";
 
+
 const Complexes = () => {
   const [complexes, setComplexes] = useState(null);
   const [isLoading, setIsloading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+  const [complexSelected, setComplexSelected] = useState(null);
 
   useEffect(() => {
     const fetchComplexes = async () => {
@@ -12,6 +14,8 @@ const Complexes = () => {
         var complexesArray = [];
         var complexes = await fetch(companyData.complexes_URL);
         var complexesJson = await complexes.json();
+
+        setComplexSelected(complexesJson[0]);
 
         for (let i = 0; i < complexesJson.length; i++) {
             var complex = {
@@ -36,9 +40,14 @@ const Complexes = () => {
     fetchComplexes();
   }, []);
 
+  const handleChange = (event) => {
+    setComplexSelected(event.target.value);
+  }
+
   return (
     <>
-      <h2>This is complexes.</h2>
+      {/* <h2>This is complexes.</h2> */}
+
       {errorMessage || isLoading ? (
         <div>
             {errorMessage || (
@@ -51,7 +60,7 @@ const Complexes = () => {
             )}
         </div>
       ) : (
-        <select>
+        <select value={complexSelected} onChange={handleChange}>
             {complexes.map((complex, index) => (
                 <option key={index} value={complex.id}>{complex.name}</option>
             ))}
