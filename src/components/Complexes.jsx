@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import companyData from "../companyData.json";
 
-
 const Complexes = () => {
   const [complexes, setComplexes] = useState(null);
   const [isLoading, setIsloading] = useState(true);
@@ -18,22 +17,23 @@ const Complexes = () => {
         setComplexSelected(complexesJson[0]);
 
         for (let i = 0; i < complexesJson.length; i++) {
-            var complex = {
-                id: complexesJson[i].id,
-                name: complexesJson[i].name
-            }
+          var complex = {
+            id: complexesJson[i].id,
+            name: complexesJson[i].name,
+          };
 
-            complexesArray.push(complex);
+          complexesArray.push(complex);
         }
 
         setComplexes(complexesArray);
         setIsloading(false);
-      }
-      catch (error) {
+      } catch (error) {
         console.error(
           "An error ocurred while fetching theater complexes. " + error.message
         );
-        setErrorMessage("An error ocurred while fetching theater complexes. " + error.message);
+        setErrorMessage(
+          "An error ocurred while fetching theater complexes. " + error.message
+        );
       }
     };
 
@@ -42,31 +42,37 @@ const Complexes = () => {
 
   const handleChange = (event) => {
     setComplexSelected(event.target.value);
-  }
+  };
 
   return (
     <>
-      {/* <h2>This is complexes.</h2> */}
-
       {errorMessage || isLoading ? (
         <div>
-            {errorMessage || (
-                <div>
-                    <button className="btn btn-primary" type="button" disabled>
-                        <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                        <span role="status">Loading...</span>
-                    </button>
-                </div>
-            )}
+          {errorMessage || (
+            <div>
+              <button className="btn btn-primary" type="button" disabled>
+                <span
+                  className="spinner-border spinner-border-sm"
+                  aria-hidden="true"
+                ></span>
+                <span role="status">Loading complexes...</span>
+              </button>
+            </div>
+          )}
         </div>
       ) : (
-        <select value={complexSelected} onChange={handleChange}>
+        <div>
+          <select value={complexSelected} onChange={handleChange}>
             {complexes.map((complex, index) => (
-                <option key={index} value={complex.id}>{complex.name}</option>
+              <option key={index} value={complex.id}>
+                {complex.name}
+              </option>
             ))}
-        </select>
-      )
-      }
+          </select>
+
+          <p>The complex selected is {complexSelected.idComplex}</p>
+        </div>
+      )}
     </>
   );
 };

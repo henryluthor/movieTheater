@@ -5,7 +5,6 @@ const Login = () => {
   const [inputs, setInputs] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loginMessage, setLoginMessage] = useState(null);
-  const [loggedInUser, setLoggedInUser] = useState(null);
   const [isPending, setIsPending] = useState(false);
 
   const handleChange = (event) => {
@@ -85,8 +84,6 @@ const Login = () => {
 
   return (
     <div>
-      {/* <h1>This is the Login component</h1>
-      <p>This is an example of a component for making a login process.</p> */}
 
       {!isLoggedIn && (
         <form onSubmit={submitForm}>
