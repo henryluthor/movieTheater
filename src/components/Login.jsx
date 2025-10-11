@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
+import companyData from "../companyData.json";
 
 const Login = () => {
   const [inputs, setInputs] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [loginMessage, setLoginMessage] = useState(null);
   const [isPending, setIsPending] = useState(false);
 
@@ -51,26 +53,31 @@ const Login = () => {
       });
 
       var responseJson = await response.json();
-      // console.log("responseJson");
+      // console.log("responseJson:");
       // console.log(responseJson);
       // console.log("token:");
       // console.log(responseJson.data.token);
       // console.log("responseJson.data.success:");
       // console.log(responseJson.data.success);
+      console.log("responseJson.data.idRole:");
+      console.log(responseJson.data.idRole);
 
       if(responseJson.data.success) {
         setLoginMessage("Welcome " + responseJson.data.email);
         localStorage.setItem('token', responseJson.data.token);
         localStorage.setItem('localStorageLoggedInUser', responseJson.data.email);
-        // localStorage.setItem('tokenExpiration', Date.now() + 60000);
+
+        // Check if user have admin role
+        if(responseJson.data.idRole == companyData.adminRoleId)
+        {
+          setIsAdmin(true);
+        }
       }
       else {
         setLoginMessage(responseJson.message);
       }
 
       setIsLoggedIn(responseJson.data.success);
-      // console.log("isLoggedIn:");
-      // console.log(isLoggedIn); // false, why?
       
     }
     catch (error) {
@@ -103,8 +110,24 @@ const Login = () => {
       )}
 
       {loginMessage && <p>{loginMessage}</p>}
+
+      {isAdmin && 
+        <div>
+          <p>Menu for admins.</p>
+          <p>Menu for regular users</p>
+        </div>
+      }
     </div>
   );
 };
 
-export default Login;
+const Menu = () => {
+  return (
+    <div>
+      <p>Menu for admins.</p>
+      <p>Menu for regular users</p>
+    </div>
+  )
+}
+
+export { Login, Menu };

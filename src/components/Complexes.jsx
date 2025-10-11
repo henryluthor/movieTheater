@@ -49,15 +49,15 @@ const Complexes = () => {
   }, []);
 
   const handleChange = (event) => {
-    console.log("In handleChange, event.target.value is:");
-    console.log(event.target.value);
-    console.log("and its type is:");
-    console.log(typeof(event.target.value))
+    // console.log("In handleChange, event.target.value is:");
+    // console.log(event.target.value);
+    // console.log("and its type is:");
+    // console.log(typeof(event.target.value))
     setComplexSelected(event.target.value);
-    console.log("In handleChange, complexSelected is now:");
-    console.log(complexSelected);
-    console.log("and its type is:");
-    console.log(typeof(complexSelected));
+    // console.log("In handleChange, complexSelected is now:");
+    // console.log(complexSelected);
+    // console.log("and its type is:");
+    // console.log(typeof(complexSelected));
   };
 
   return (
@@ -97,7 +97,9 @@ const Complexes = () => {
 const ComplexMovies = () => {
   const complexSelected = useContext(ComplexContext);
 
-  return <p>HERE SHOW MOVIES FROM COMPLEX NUMBER {complexSelected}</p>;
+  return (
+    complexSelected && (<p>SHOW THERE THE FUNCTIONS OF COMPLEX NUMBER {complexSelected}</p>)
+  );
 };
 
 export { Complexes, ComplexMovies };

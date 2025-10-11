@@ -4,10 +4,12 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+// Importing Popper, necesary for dropdowns
+// import 'https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js';
+
 // Importing bootstrap
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
-// import { companyData } from './companyData';
 import companyData from './companyData.json'
 
 //Changing the title text to Company name

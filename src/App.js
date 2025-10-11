@@ -6,9 +6,10 @@ import BillboardV2 from "./components/BillboardV2";
 import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from "react-router-dom";
 import PageNotFound from "./components/PageNotFound";
 import MovieDetails, { MovieDetailsLoader } from "./components/MovieDetails";
-import Login from "./components/Login";
+import { Login } from "./components/Login";
 import { Complexes } from "./components/Complexes";
 import PageForIndex from "./components/PageForIndex";
+import LoginV2 from "./components/LoginV2";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -29,7 +30,9 @@ function App() {
     <div className="App container">
       <Header />
 
-      <Login></Login>
+      {/* <Login></Login> */}
+
+      <LoginV2></LoginV2>
 
       <Complexes></Complexes>
 
