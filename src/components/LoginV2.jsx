@@ -7,12 +7,13 @@ const LoginV2 = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loginMessage, setLoginMessage] = useState(null);
+  const [loggedInUser, setLoggedInUser] = useState(null);
   const [isPending, setIsPending] = useState(false);
 
   const handleChange = (event) => {
     const name = event.target.name;
-    console.log("In handleChage, event.target.name:");
-    console.log(name);
+    // console.log("In handleChage, event.target.name:");
+    // console.log(name);
     const value = event.target.value;
     setInputs((values) => ({ ...values, [name]: value }));
   };
@@ -47,8 +48,8 @@ const LoginV2 = () => {
     setLoginMessage("");
 
     try {
-      console.log("email to send:");
-      console.log(inputs.email);
+      // console.log("email to send:");
+      // console.log(inputs.email);
       var response = await fetch("https://localhost:7046/api/Login", {
         method: "POST",
         headers: { "Content-type": "application/json" },
@@ -70,6 +71,7 @@ const LoginV2 = () => {
 
       if (responseJson.data.success) {
         setLoginMessage("Welcome " + responseJson.data.email);
+        setLoggedInUser(responseJson.data.email);
         localStorage.setItem("token", responseJson.data.token);
         localStorage.setItem(
           "localStorageLoggedInUser",
@@ -97,6 +99,42 @@ const LoginV2 = () => {
     <div>
       {loginMessage && <p>{loginMessage}</p>}
       <div className="dropdown">
+        {isLoggedIn ? (
+          <div>
+            <p>It is logged in! Yeaaah! Show menu.</p>
+            <div class="dropdown">
+              <button
+                class="btn btn-secondary dropdown-toggle"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Welcome {loggedInUser}
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="#">
+                    Action
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#">
+                    Another action
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#">
+                    Something else here
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        ) : (
+          <div>
+            <p>It is NOT logged in. Show form.</p>
+          </div>
+        )}
         {!isLoggedIn && (
           <div>
             <button

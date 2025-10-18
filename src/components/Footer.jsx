@@ -1,13 +1,13 @@
 import React from "react";
-
-const packageJson = require("../../package.json");
-const reactVersion = packageJson.dependencies.react.substring(1);
+import TMDBLogo from "../images/Asset 4.svg"
 
 const Footer = () => {
-  return <div>
-    <div>Developed by Henry Acevedo in React {reactVersion}</div>
-    <div>This product uses the TMDB API but is not endorsed or certified by TMDB.</div>
-  </div>;
+  return (
+    <div>
+      <img src={TMDBLogo} alt="TMDB Logo" style={{width: 100}}></img>
+      <div>This product uses the TMDB API but is not endorsed or certified by TMDB.</div>
+  </div>
+  )
 };
 
 export default Footer;
