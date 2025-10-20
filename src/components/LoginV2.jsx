@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import companyData from "../companyData.json";
+import "./LoginV2.css";
 
 const LoginV2 = () => {
   const [inputs, setInputs] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loginMessage, setLoginMessage] = useState(null);
+  const [loginMessageColor, setLoginMessageColor] = useState("green");
   const [loggedInUser, setLoggedInUser] = useState(null);
   const [isPending, setIsPending] = useState(false);
 
@@ -70,6 +72,7 @@ const LoginV2 = () => {
       console.log(responseJson.data.idRole);
 
       if (responseJson.data.success) {
+        setLoginMessageColor("green");
         setLoginMessage("Welcome " + responseJson.data.email);
         setLoggedInUser(responseJson.data.email);
         localStorage.setItem("token", responseJson.data.token);
@@ -83,11 +86,13 @@ const LoginV2 = () => {
           setIsAdmin(true);
         }
       } else {
+        setLoginMessageColor("red");
         setLoginMessage(responseJson.message);
       }
 
       setIsLoggedIn(responseJson.data.success);
     } catch (error) {
+      setLoginMessageColor("red");
       console.error(error.message);
       setLoginMessage(error.message);
     } finally {
@@ -146,7 +151,7 @@ const LoginV2 = () => {
             >
               Login
             </button>
-            <form onSubmit={submitForm} className="dropdown-menu p-4">
+            <form onSubmit={submitForm} className="dropdown-menu p-4 LoginBlockContainer">
               <div className="mb-3">
                 <label
                   htmlFor="exampleDropdownFormEmail2"
@@ -194,6 +199,9 @@ const LoginV2 = () => {
               <button type="submit" className="btn btn-primary">
                 Sign in
               </button>
+              <div className="mb-3" style={{color: loginMessageColor}}>
+                {loginMessage}
+              </div>
             </form>
           </div>
         )}
