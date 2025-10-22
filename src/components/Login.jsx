@@ -53,14 +53,7 @@ const Login = () => {
       });
 
       var responseJson = await response.json();
-      // console.log("responseJson:");
-      // console.log(responseJson);
-      // console.log("token:");
-      // console.log(responseJson.data.token);
-      // console.log("responseJson.data.success:");
-      // console.log(responseJson.data.success);
-      console.log("responseJson.data.idRole:");
-      console.log(responseJson.data.idRole);
+      setIsLoggedIn(responseJson.data.success);
 
       if(responseJson.data.success) {
         setLoginMessage("Welcome " + responseJson.data.email);
@@ -76,8 +69,6 @@ const Login = () => {
       else {
         setLoginMessage(responseJson.message);
       }
-
-      setIsLoggedIn(responseJson.data.success);
       
     }
     catch (error) {
