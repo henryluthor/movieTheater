@@ -14,8 +14,6 @@ const LoginV2 = () => {
 
   const handleChange = (event) => {
     const name = event.target.name;
-    // console.log("In handleChage, event.target.name:");
-    // console.log(name);
     const value = event.target.value;
     setInputs((values) => ({ ...values, [name]: value }));
   };
@@ -34,15 +32,8 @@ const LoginV2 = () => {
     console.log("useEffect has been triggered");
     
     const token = localStorage.getItem("token");
-    const userFromLocalStorage = localStorage.getItem("localStorageLoggedInUser");
-    console.log("userFromLocalStorage:");
-    console.log(userFromLocalStorage);
-
     if (token && isTokenValid()) {
       setIsLoggedIn(true);
-      if (userFromLocalStorage) {
-        setLoginMessage("Welcome " + userFromLocalStorage);
-      }
     }
   }, []);
 
@@ -50,7 +41,6 @@ const LoginV2 = () => {
     e.preventDefault();
 
     setIsPending(true);
-    setLoginMessage("");
 
     try {
       var response = await fetch("https://localhost:7046/api/Login", {
@@ -66,145 +56,74 @@ const LoginV2 = () => {
       console.log("responseJson.data.idRole:");
       console.log(responseJson.data.idRole);
 
+      setIsLoggedIn(responseJson.data.success);
+
       if (responseJson.data.success) {
         setLoginMessageColor("green");
-        // setLoginMessage("Welcome " + responseJson.data.email);
-        setLoggedInUser(responseJson.data.email);
         localStorage.setItem("token", responseJson.data.token);
-        localStorage.setItem(
-          "localStorageLoggedInUser",
-          responseJson.data.email
-        );
+        localStorage.setItem("localStorageLoggedInUser", responseJson.data.email);
 
         // Check if user have admin role
         if (responseJson.data.idRole == companyData.adminRoleId) {
           setIsAdmin(true);
         }
-      } else {
+      } 
+      else {
         setLoginMessageColor("red");
         setLoginMessage(responseJson.message);
       }
-
-      setIsLoggedIn(responseJson.data.success);
-    } catch (error) {
+      
+    } 
+    catch (error) {
       setLoginMessageColor("red");
       console.error(error.message);
       setLoginMessage(error.message);
-    } finally {
+    } 
+    finally {
       setIsPending(false);
     }
   };
 
   return (
     <div>
-      {/* {loginMessage && <p>{loginMessage}</p>} */}
-      <div className="dropdown">
-        {isLoggedIn ? (
-          <div>
-            <div className="dropdown">
-              <button
-                className="btn btn-secondary dropdown-toggle"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Welcome {loggedInUser}
-              </button>
-              <p>show what goes following</p>
-              <ul className="dropdown-menu">
-                <li>
-                  <a className="dropdown-item" href="#">
-                    Action
-                  </a>
-                </li>
-                <li>
-                  <a className="dropdown-item" href="#">
-                    Another action
-                  </a>
-                </li>
-                <li>
-                  <a className="dropdown-item" href="#">
-                    Something else here
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        ) : (
-          <div>
-            {/* <p>It is NOT logged in. Show form.</p> */}
-            <div>
-              <button
-                type="button"
-                className="btn btn-primary dropdown-toggle"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                data-bs-auto-close="outside"
-              >
-                Login
-              </button>
-              <form onSubmit={submitForm} className="dropdown-menu p-4 LoginBlockContainer">
-                <div className="mb-3">
-                  <label
-                    htmlFor="exampleDropdownFormEmail2"
-                    className="form-label"
-                  >
-                    Email address
+      {isLoggedIn ? (
+        <div>
+          YEAH! IT IS LOGGED IN
+        </div>
+      ) : (
+        <div>
+          IS NOT LOGGED IN
+          <div className="dropdown">
+            <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+              Login
+            </button>
+            <div className="dropdown-menu">
+            <form onSubmit={submitForm} className="px-4 py-3">
+              <div className="mb-3">
+                <label htmlFor="exampleDropdownFormEmail1" className="form-label">Email address</label>
+                <input name="email" type="email" className="form-control" onChange={handleChange} id="exampleDropdownFormEmail1" placeholder="email@example.com"/>
+              </div>
+              <div className="mb-3">
+                <label htmlFor="exampleDropdownFormPassword1" className="form-label">Password</label>
+                <input name="password" type="password" className="form-control" onChange={handleChange} id="exampleDropdownFormPassword1" placeholder="Password"/>
+              </div>
+              <div className="mb-3">
+                <div className="form-check">
+                  <input type="checkbox" className="form-check-input" id="dropdownCheck"/>
+                  <label className="form-check-label" htmlFor="dropdownCheck">
+                    Remember me
                   </label>
-                  <input
-                    type="email"
-                    className="form-control"
-                    id="exampleDropdownFormEmail2"
-                    placeholder="email@example.com"
-                    name="email"
-                    onChange={handleChange}
-                  ></input>
                 </div>
-                <div className="mb-3">
-                  <label
-                    htmlFor="exampleDropdownFormPassword2"
-                    className="form-label"
-                  >
-                    Password
-                  </label>
-                  <input
-                    type="password"
-                    className="form-control"
-                    id="exampleDropdownFormPassword2"
-                    placeholder="Password"
-                    name="password"
-                    onChange={handleChange}
-                  ></input>
-                </div>
-                <div className="mb-3">
-                  <div className="form-check">
-                    <input
-                      type="checkbox"
-                      className="form-check-input"
-                      id="dropdownCheck2"
-                    ></input>
-                    <label className="form-check-label" htmlFor="dropdownCheck2">
-                      Remember me
-                    </label>
-                  </div>
-                </div>
-                <button type="submit" className="btn btn-primary">
-                  Sign in
-                </button>
-                {isPending && (
-                  <button className="btn btn-primary" type="button" disabled>
-                    <span className="spinner-border spinner-border-sm" aria-hidden="true"></span>
-                    <span role="status">Logging in...</span>
-                  </button>
-                )}
-                <div className="mb-3" style={{color: loginMessageColor}}>
-                  {loginMessage}
-                </div>
-              </form>
-            </div>
+              </div>
+              <button type="submit" className="btn btn-primary">Sign in</button>
+            </form>
+            <div className="dropdown-divider"></div>
+            <a className="dropdown-item" href="#">New around here? Sign up</a>
+            <a className="dropdown-item" href="#">Forgot password?</a>
+</div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
