@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
+import companyData from "../companyData.json";
 
 const LoginV2 = () => {
   const [inputs, setInputs] = useState({});
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loggedInUser, setLoggedInUser] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [loginMessage, setLoginMessage] = useState(null);
   const [loginMessageColor, setLoginMessageColor] = useState(null);
   const [isPending, setIsPending] = useState(false);
@@ -29,10 +32,23 @@ const LoginV2 = () => {
     // if(token && isTokenValid()) {
     if(isTokenValid()) {
       setIsLoggedIn(true);
-      const userFromLocalStorage = localStorage.getItem('localStorageLoggedInUser');
-      if(userFromLocalStorage) {
-        setLoginMessage("Welcome " + userFromLocalStorage);
+      const loggedInUserFromLocalStorage = localStorage.getItem('localStorageLoggedInUser');
+      const isAdminFromLocalStorage = localStorage.getItem('localStorageIsAdmin');
+      if(loggedInUserFromLocalStorage) {
+        setLoginMessage(null);
+        setLoggedInUser(loggedInUserFromLocalStorage);
+        console.log("isAdminFromLocalStorage");
+        console.log(isAdminFromLocalStorage);
+        if(isAdminFromLocalStorage){
+          setIsAdmin(true);
+        }
       }
+    }
+    else{
+      // Clear localStorage
+      localStorage.removeItem('token');
+      localStorage.removeItem('localStorageLoggedInUser');
+      localStorage.removeItem('localStorageIsAdmin');
     }
   }, []);
 
@@ -51,25 +67,44 @@ const LoginV2 = () => {
       });
 
       var responseJson = await response.json();
-      console.log("responseJson:");
-      console.log(responseJson);
+      // console.log("responseJson:");
+      // console.log(responseJson);
+
       setIsLoggedIn(responseJson.data.success);
 
       if(responseJson.data.success){
         setLoginMessageColor(null);
-        setLoginMessage("Welcome " + responseJson.data.email);
+        setLoginMessage(null);
+        setLoggedInUser(responseJson.data.email);
         localStorage.setItem('token', responseJson.data.token);
         localStorage.setItem('localStorageLoggedInUser', responseJson.data.email);
+
+        // Check if user has admin role
+        if(responseJson.data.idRole == companyData.adminRoleId){
+          setIsAdmin(true);
+          localStorage.setItem('localStorageIsAdmin', true);
+        }
       }
       else{
+        // Login was not successful
         setLoginMessageColor("red");
         setLoginMessage(responseJson.message);
+
+        // Clear localStorage
+        localStorage.removeItem('token');
+        localStorage.removeItem('localStorageLoggedInUser');
+        localStorage.removeItem('localStorageIsAdmin');
       }
     }
     catch(error){
       console.error("An error ocurred while attempting to login. " + error.message);
       setLoginMessageColor("red");
       setLoginMessage("An error ocurred while attempting to login. " + error.message);
+
+      // Clear localStorage
+      localStorage.removeItem('token');
+      localStorage.removeItem('localStorageLoggedInUser');
+      localStorage.removeItem('localStorageIsAdmin');
     }
     finally{
       setIsPending(false);
@@ -78,9 +113,12 @@ const LoginV2 = () => {
 
   return (
     <div>
+      {loggedInUser && <p>Welcome {loggedInUser}</p>}
       {isLoggedIn ? (
         <div>
           {/* <p>YEAH! IT IS LOGGED IN!</p> */}
+          {isAdmin && <div>SHOW THIS FOR ADMIN USERS</div>}
+          <div>SHOW THIS FOR REGULAR USERS</div>
         </div>
       ):(
         <div>
@@ -110,7 +148,7 @@ const LoginV2 = () => {
             </button>
             }
           </form>
-        </div>        
+        </div>
       )}
       {loginMessage &&
       <div>
