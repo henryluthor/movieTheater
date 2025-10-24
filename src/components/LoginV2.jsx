@@ -28,20 +28,16 @@ const LoginV2 = () => {
   }
 
   useEffect(() => {
+    setIsLoggedIn(isTokenValid());
     // const token = localStorage.getItem('token');
     // if(token && isTokenValid()) {
     if(isTokenValid()) {
-      setIsLoggedIn(true);
       const loggedInUserFromLocalStorage = localStorage.getItem('localStorageLoggedInUser');
       const isAdminFromLocalStorage = localStorage.getItem('localStorageIsAdmin');
       if(loggedInUserFromLocalStorage) {
         setLoginMessage(null);
         setLoggedInUser(loggedInUserFromLocalStorage);
-        console.log("isAdminFromLocalStorage");
-        console.log(isAdminFromLocalStorage);
-        if(isAdminFromLocalStorage){
-          setIsAdmin(true);
-        }
+        setIsAdmin(isAdminFromLocalStorage);
       }
     }
     else{
@@ -49,7 +45,10 @@ const LoginV2 = () => {
       localStorage.removeItem('token');
       localStorage.removeItem('localStorageLoggedInUser');
       localStorage.removeItem('localStorageIsAdmin');
+      setLoggedInUser(null);
+      setIsAdmin(null);
     }
+    
   }, []);
 
   const submitForm = async (e) => {
@@ -94,6 +93,8 @@ const LoginV2 = () => {
         localStorage.removeItem('token');
         localStorage.removeItem('localStorageLoggedInUser');
         localStorage.removeItem('localStorageIsAdmin');
+        setLoggedInUser(null);
+        setIsAdmin(null);
       }
     }
     catch(error){
@@ -111,13 +112,26 @@ const LoginV2 = () => {
     }
   }
 
+  const logout = () => {
+    setIsLoggedIn(false);
+    localStorage.removeItem('token');
+    localStorage.removeItem('localStorageLoggedInUser');
+    localStorage.removeItem('localStorageIsAdmin');
+    setLoggedInUser(null);
+    setIsAdmin(null);
+  }
+
   return (
     <div>
       {loggedInUser && <p>Welcome {loggedInUser}</p>}
       {isLoggedIn ? (
         <div>
           {/* <p>YEAH! IT IS LOGGED IN!</p> */}
-          {isAdmin && <div>SHOW THIS FOR ADMIN USERS</div>}
+          <button onClick={logout}>Log out</button>
+          {isAdmin && 
+          <div>
+            HOW THIS FOR ADMIN USERS
+          </div>}
           <div>SHOW THIS FOR REGULAR USERS</div>
         </div>
       ):(
