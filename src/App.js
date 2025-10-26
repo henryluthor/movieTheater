@@ -10,6 +10,8 @@ import { Login } from "./components/Login";
 import { Complexes } from "./components/Complexes";
 import PageForIndex from "./components/PageForIndex";
 import LoginV2 from "./components/LoginV2";
+import LoginV3 from "./components/LoginV3";
+import NoPermit from "./components/NoPermit";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -20,6 +22,7 @@ const router = createBrowserRouter(
         element={<MovieDetails />}
         loader={MovieDetailsLoader}
       ></Route>
+      <Route path="/NoPermit" element={<NoPermit/>}></Route>
       <Route path="*" element={<PageNotFound />}></Route>
     </Route>
   )
@@ -32,9 +35,11 @@ function App() {
 
       {/* <Login></Login> */}
 
-      <LoginV2></LoginV2>
+      {/* <LoginV2></LoginV2> */}
 
-      <Complexes></Complexes>
+      <LoginV3></LoginV3>
+
+      {/* <Complexes></Complexes> */}
 
       <RouterProvider router={router} />
 
