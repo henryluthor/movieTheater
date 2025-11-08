@@ -6,11 +6,9 @@ import BillboardV2 from "./components/BillboardV2";
 import { Route, createBrowserRouter, createRoutesFromElements, RouterProvider } from "react-router-dom";
 import PageNotFound from "./components/PageNotFound";
 import MovieDetails, { MovieDetailsLoader } from "./components/MovieDetails";
-import { Login } from "./components/Login";
 import { Complexes } from "./components/Complexes";
 import PageForIndex from "./components/PageForIndex";
-import LoginV2 from "./components/LoginV2";
-import LoginV3 from "./components/LoginV3";
+import LoginV5 from "./components/LoginV5";
 import NoPermit from "./components/NoPermit";
 
 const router = createBrowserRouter(
@@ -33,11 +31,7 @@ function App() {
     <div className="App container">
       <Header />
 
-      {/* <Login></Login> */}
-
-      {/* <LoginV2></LoginV2> */}
-
-      <LoginV3></LoginV3>
+      <LoginV5></LoginV5>
 
       {/* <Complexes></Complexes> */}
 
