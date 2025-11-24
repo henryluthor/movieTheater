@@ -5,6 +5,7 @@ const LoginV5 = () => {
   const [inputs, setInputs] = useState([]);
   const [authenticated, setAuthenticated] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState("");
+  const [loginMessage, setLoginMessage] = useState("");
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -17,7 +18,7 @@ const LoginV5 = () => {
 
     axios.get('https://localhost:7046/api/Auth/authenticated', { withCredentials: true})
     .then(response => {
-      console.log("response:");
+      console.log("useEffect response:");
       console.log(response);
       if(response.data.authenticated){
         setAuthenticated(true);
@@ -34,8 +35,10 @@ const LoginV5 = () => {
     e.preventDefault();
 
     try{
-      var response = await fetch("https://localhost:7046/api/Login",{
+      // Original line var response = await fetch("https://localhost:7046/api/Login",{
+      var response = await fetch("https://localhost:7046/api/Auth/login",{
 				method: "POST",
+        credentials: "include",
 				headers: { "Content-type": "application/json" },
 				body: JSON.stringify({
 					email: inputs.email,
@@ -43,14 +46,26 @@ const LoginV5 = () => {
 				})
 			});
 
+      console.log("submit response");
+      console.log(response);
+      console.log("submit response.data");
+      console.log(response.data);
+
 			var responseJson = await response.json();
 
-      if(responseJson.data.success){
+      console.log("submit responseJson");
+      console.log(responseJson);
+      console.log("submit responseJson.authenticated");
+      console.log(responseJson.authenticated);
+
+      if(responseJson.authenticated){
+        setAuthenticated(true);
         setLoggedInUser(responseJson.data.email);
       }
       else{
         setLoggedInUser(null);
       }
+      setLoginMessage(responseJson.message);
     }
     catch(error){
       console.error("An error ocurred while attempting to login. " + error.message);
@@ -80,6 +95,7 @@ const LoginV5 = () => {
           name="password"
           onChange={handleChange}></input>
           <button>Login</button>
+          <p>{loginMessage}</p>
         </form>
       </div>
     );
