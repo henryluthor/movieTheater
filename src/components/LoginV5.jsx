@@ -14,7 +14,7 @@ const LoginV5 = () => {
 	}
 
   useEffect(() => {
-    console.log("useEffect triggered");
+    console.log("useEffect triggered in LoginV5");
 
     axios.get('https://localhost:7046/api/Auth/authenticated', { withCredentials: true})
     .then(response => {
@@ -68,33 +68,57 @@ const LoginV5 = () => {
       setLoginMessage(responseJson.message);
     }
     catch(error){
+      // TO DO: SHOW ERROR IN DOM TO NOTIFY USER OF ERROR AT LOGIN
       console.error("An error ocurred while attempting to login. " + error.message);
+    }
+  }
+
+  
+  const logout = async () => {
+    try{
+      await fetch('https://localhost:7046/api/Auth/logout',{
+        method: 'POST',
+        credentials: "include"
+      });
+
+      setAuthenticated(false);      
+    }
+    catch(error){
+      console.log("Error loggin out: " + error)
     }
   }
 
   if(authenticated){
     return(
       <div>
-        <p>Bienvenido, {loggedInUser}</p>
+        <div>
+          <p>Welcome, {loggedInUser}</p>
+        </div>
+        <div>
+          <button className="btn btn-primary" onClick={logout}>Logout</button>
+        </div>
       </div>
     );
   }
   else{
     return(
       <div>
-        <p>Mostrar form</p>
         <form onSubmit={submitForm}>
-          <label>Email</label>
+          <label htmlFor="email" className="form-label">Email</label>
           <input
+          id="email"
+          className="form-control"
           type="email"
           name="email"
           onChange={handleChange}></input>
-          <label>Password</label>
+          <label htmlFor="password" className="form-label">Password</label>
           <input
+          id="password"
+          className="form-control"
           type="password"
           name="password"
           onChange={handleChange}></input>
-          <button>Login</button>
+          <button className="btn btn-primary m-3">Login</button>
           <p>{loginMessage}</p>
         </form>
       </div>

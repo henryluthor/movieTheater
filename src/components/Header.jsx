@@ -13,8 +13,9 @@ const Header = () => {
         <img src={React_Logo} style={{height: 50}} alt="react poster"></img>
         <p style={{margin: 10}}>Developed by Henry Acevedo in React {reactVersion}</p>
       </div>
-      <h1>{companyData.companyName}</h1>
-      <a href="/">PAGINA INICIAL</a>
+      <h1><a href="/">{companyData.companyName}</a></h1>
+      {/* <h1>{companyData.companyName}</h1> */}
+      {/* <a href="/">PAGINA INICIAL</a> */}
     </div>
   );
 };
