@@ -16,6 +16,7 @@ const LoginV5 = () => {
   useEffect(() => {
     console.log("useEffect triggered in LoginV5");
 
+    // With axios
     axios.get('https://localhost:7046/api/Auth/authenticated', { withCredentials: true})
     .then(response => {
       console.log("useEffect response:");
@@ -26,10 +27,41 @@ const LoginV5 = () => {
       }
     })
     .catch(error => {
-      console.error("error:");
-      console.error(error);
+      // console.error("Error:");
+      // console.error(error);
     });
+
+    // With fetch
+    // const fetchData = async () => {
+    //   try{
+    //     var response = await fetch("https://localhost:7046/api/Auth/authenticated", {
+    //     method: "GET",
+    //     credentials: "include"
+    //     });
+
+    //     console.log("Use effect response:");
+    //     console.log(response);
+
+    //     if(response.data.authenticated){
+    //       setAuthenticated(true);
+    //       setLoggedInUser(response.data.email);
+    //     }
+
+    //     var responseJson = await response.json();
+    //     console.log("Use effect responseJson:");
+    //     console.log(responseJson);
+    //   }
+    //   catch(error){
+    //     console.log("Error:");
+    //     console.log(error);
+    //   }      
+    // };
+
+    // fetchData();
+
   }, []);
+
+
 
   const submitForm = async (e) => {
     e.preventDefault();
@@ -46,23 +78,20 @@ const LoginV5 = () => {
 				})
 			});
 
-      console.log("submit response");
-      console.log(response);
-      console.log("submit response.data");
-      console.log(response.data);
-
-			var responseJson = await response.json();
-
+      var responseJson = await response.json();
       console.log("submit responseJson");
       console.log(responseJson);
       console.log("submit responseJson.authenticated");
       console.log(responseJson.authenticated);
+      console.log("responseJson.email");
+      console.log(responseJson.email);
 
       if(responseJson.authenticated){
         setAuthenticated(true);
-        setLoggedInUser(responseJson.data.email);
+        setLoggedInUser(responseJson.email);
       }
       else{
+        setAuthenticated(false);
         setLoggedInUser(null);
       }
       setLoginMessage(responseJson.message);
@@ -81,7 +110,7 @@ const LoginV5 = () => {
         credentials: "include"
       });
 
-      setAuthenticated(false);      
+      setAuthenticated(false);
     }
     catch(error){
       console.log("Error loggin out: " + error)
