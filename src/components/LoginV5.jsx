@@ -1,4 +1,4 @@
-import React, {useState, useEffect } from "react";
+import {useState, useEffect } from "react";
 import axios from 'axios';
 
 const LoginV5 = () => {
@@ -19,19 +19,18 @@ const LoginV5 = () => {
     // With axios
     axios.get('https://localhost:7046/api/Auth/authenticated', { withCredentials: true})
     .then(response => {
-      console.log("useEffect response:");
-      console.log(response);
       if(response.data.authenticated){
         setAuthenticated(true);
         setLoggedInUser(response.data.email);
       }
     })
     .catch(error => {
-      // console.error("Error:");
-      // console.error(error);
+      console.error("Error:");
+      console.error(error);
     });
 
-    // With fetch
+    // With fetch first you must make an async function, then call that function
+    // because you cannot have useEffect itself as async
     // const fetchData = async () => {
     //   try{
     //     var response = await fetch("https://localhost:7046/api/Auth/authenticated", {
@@ -79,12 +78,6 @@ const LoginV5 = () => {
 			});
 
       var responseJson = await response.json();
-      console.log("submit responseJson");
-      console.log(responseJson);
-      console.log("submit responseJson.authenticated");
-      console.log(responseJson.authenticated);
-      console.log("responseJson.email");
-      console.log(responseJson.email);
 
       if(responseJson.authenticated){
         setAuthenticated(true);
@@ -150,6 +143,7 @@ const LoginV5 = () => {
           <button className="btn btn-primary m-3">Login</button>
           <p>{loginMessage}</p>
         </form>
+        <p>Not registered? Create an account here</p>
       </div>
     );
   }
