@@ -10,6 +10,8 @@ import { Complexes } from "./components/Complexes";
 import PageForIndex from "./components/PageForIndex";
 import NoPermit from "./components/NoPermit";
 import LoginV6 from "./components/LoginV6";
+import MyDropdownMenu from "./components/MyDropdownMenu";
+
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -33,7 +35,9 @@ function App() {
 
       <LoginV6></LoginV6>
 
-      {/* <Complexes></Complexes> */}
+      <p>before dropdown menu</p>
+      <MyDropdownMenu></MyDropdownMenu>
+      <p>after dropdown menu</p>
 
       <RouterProvider router={router} />
 

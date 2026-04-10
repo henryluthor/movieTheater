@@ -13,6 +13,7 @@ export const AuthProvider = ({children}) => {
 
   // Calling the endpoint
   const checkAuthStatus = async () => {
+    
     try{
       var response = await fetch("https://localhost:7046/api/Auth/authenticated", {
         method: "GET",
@@ -25,7 +26,7 @@ export const AuthProvider = ({children}) => {
       }      
     }
     catch(error){
-      console.log("Error at authentication: " + error.message);
+      console.error("Error at authentication: " + error.message);
       setUser(null);
     }
     finally{
@@ -48,8 +49,22 @@ export const AuthProvider = ({children}) => {
 
   }
 
+  const logout = async () => {
+    try{
+      await fetch('https://localhost:7046/api/Auth/logout',{
+        method: 'POST',
+        credentials: "include"
+      });
+
+      setUser(null);
+    }
+    catch(error){
+      console.error("An error ocurred while attempting to logout. " + error.message);
+    }
+  }
+
   return(
-    <AuthContext.Provider value={{user, setUser, authLoading }}>
+    <AuthContext.Provider value={{user, setUser, authLoading, logout }}>
       {children}
     </AuthContext.Provider>
   );
