@@ -8,8 +8,8 @@ import PageNotFound from "./components/PageNotFound";
 import MovieDetails, { MovieDetailsLoader } from "./components/MovieDetails";
 import { Complexes } from "./components/Complexes";
 import PageForIndex from "./components/PageForIndex";
-import LoginV5 from "./components/LoginV5";
 import NoPermit from "./components/NoPermit";
+import LoginV6 from "./components/LoginV6";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -31,7 +31,7 @@ function App() {
     <div className="App container">
       <Header />
 
-      <LoginV5></LoginV5>
+      <LoginV6></LoginV6>
 
       {/* <Complexes></Complexes> */}
 

@@ -11,6 +11,7 @@ import reportWebVitals from './reportWebVitals';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 import companyData from './companyData.json'
+import { AuthProvider } from './components/AuthProvider';
 
 //Changing the title text to Company name
 let firstTitleTag = document.getElementsByTagName("title")[0];
@@ -19,7 +20,9 @@ firstTitleTag.text = companyData.companyName;
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <AuthProvider>
+      <App />
+    </AuthProvider>
   </React.StrictMode>
 );
 
