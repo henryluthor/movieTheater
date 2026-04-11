@@ -1,6 +1,6 @@
-function pageNotFound()
+function PageNotFound()
 {
     return <div>PAGE NOT FOUND</div>
 }
 
-export default pageNotFound;
+export default PageNotFound;
