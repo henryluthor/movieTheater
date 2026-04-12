@@ -13,17 +13,20 @@ export const AuthProvider = ({children}) => {
 
   // Calling the endpoint
   const checkAuthStatus = async () => {
+    console.log("checkAuthStatus triggered");
     
     try{
       var response = await fetch("https://localhost:7046/api/Auth/authenticated", {
         method: "GET",
         credentials: "include"
       });
-
+      
       if(response.ok){
         var responseJson = await response.json();
         setUser(responseJson);
-      }      
+        console.log("responseJson in checkAuthStatus:");
+        console.log(responseJson);
+      }
     }
     catch(error){
       console.error("Error at authentication: " + error.message);
