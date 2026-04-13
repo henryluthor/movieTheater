@@ -8,12 +8,14 @@ export const AuthProvider = ({children}) => {
   const [authLoading, setAuthLoading] = useState(true);
 
   useEffect(() => {
-    checkAuthStatus();
+    // Delaying useEffect manually
+    setTimeout(checkAuthStatus, 3000);
+
+    // checkAuthStatus();
   },[]);
 
   // Calling the endpoint
   const checkAuthStatus = async () => {
-    console.log("checkAuthStatus triggered");
     
     try{
       var response = await fetch("https://localhost:7046/api/Auth/authenticated", {
@@ -24,8 +26,6 @@ export const AuthProvider = ({children}) => {
       if(response.ok){
         var responseJson = await response.json();
         setUser(responseJson);
-        console.log("responseJson in checkAuthStatus:");
-        console.log(responseJson);
       }
     }
     catch(error){
