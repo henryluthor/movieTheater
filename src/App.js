@@ -13,6 +13,7 @@ import Home from "./components/Home"
 import MyProfile from "./components/MyProfile";
 import AdminPanel from "./components/AdminPanel";
 import ProtectedRoute from "./components/ProtectedRoute";
+import UserForm from "./components/UserForm";
 
 
 // const router = createBrowserRouter(
@@ -43,12 +44,20 @@ function App() {
             <Route path="/profile" element={
               <ProtectedRoute>
                 <MyProfile />
-              </ProtectedRoute>}></Route>
+              </ProtectedRoute>}>
+            </Route>
             <Route path="/admin" element={
               <ProtectedRoute requiredRole="Admin">
                 <AdminPanel />
               </ProtectedRoute>
-            }></Route>
+            }>
+              {/* Child routes */}
+              <Route path="create-user" element={
+                <ProtectedRoute>
+                  <UserForm />
+                </ProtectedRoute>
+              }></Route>
+            </Route>
             <Route path="*" element={<PageNotFound />}></Route>
           </Routes>
         </div>

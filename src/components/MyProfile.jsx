@@ -2,8 +2,6 @@ import {useAuth} from "./AuthProvider";
 
 const MyProfile = () => {
   const {user} = useAuth();
-  // console.log("user at MyProfile:");
-  // console.log(user);
 
   return(
     <div>

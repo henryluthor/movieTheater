@@ -17,7 +17,6 @@ const LoginForm = () => {
   const submitForm = async (ev) => {
     ev.preventDefault();
 
-    // new line
     setLoginLoading(true);
 
     try{

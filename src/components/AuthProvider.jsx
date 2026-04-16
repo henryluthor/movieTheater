@@ -8,10 +8,10 @@ export const AuthProvider = ({children}) => {
   const [authLoading, setAuthLoading] = useState(true);
 
   useEffect(() => {
-    // Delaying useEffect manually
-    setTimeout(checkAuthStatus, 3000);
+    // Delaying useEffect manually for testing
+    // setTimeout(checkAuthStatus, 3000);
 
-    // checkAuthStatus();
+    checkAuthStatus();
   },[]);
 
   // Calling the endpoint
