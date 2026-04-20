@@ -1,6 +1,7 @@
 import NoPermit from "./NoPermit";
 import { useAuth } from "./AuthProvider"
 import { useEffect, useState } from "react";
+import Spinner from "react-bootstrap/Spinner";
 
 const UsersList = () => {
   const user = useAuth();
@@ -37,13 +38,35 @@ const UsersList = () => {
     {user? (
       <div>
         {usersLoading ? (
-          <>
-          <p>LOADING USERS...</p>
-          </>
+          <div>
+            <Spinner
+            as="span"
+            animation="border"
+            size="sm"
+            role="status"
+            aria-hidden="true"
+            className="me-2"
+            />
+            Loading users...
+          </div>
         ):(
             users? (
               <>
-                <div>{JSON.stringify(users)}</div>
+              {/* <div>{JSON.stringify(users)}</div> */}
+              <table>
+                <thead>
+                  <tr>
+                    <th>Email</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {users.map((user, index) => (
+                    <tr key={index}>
+                      <td>{user.email}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
               </>
             ):(
               <>
