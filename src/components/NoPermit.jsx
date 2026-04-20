@@ -1,6 +1,6 @@
 const NoPermit = () => {
     return(
-        <div>YOU DON'T HAVE AUTHORIZATION TO SEE THIS SECTION.</div>
+        <div>YOU DO NOT HAVE AUTHORIZATION TO SEE THIS SECTION.</div>
     )
 }
 

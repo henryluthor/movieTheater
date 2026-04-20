@@ -20,11 +20,13 @@ const AdminPanel = () => {
               <Nav.Link href="#home">Home</Nav.Link>
               <Nav.Link href="#link">Link</Nav.Link>
               {isAdmin &&
-              // <Nav.Link href="admin/create-user">Create User - For Admins Only</Nav.Link>
-              <Nav.Link as={Link} to="create-user">Create User - For Admins Only</Nav.Link>
+              <NavDropdown title="Users">
+                <NavDropdown.Item as={Link} to="create-user">Create user</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="users-list">Show users</NavDropdown.Item>
+              </NavDropdown>
               }
               <Nav.Link href="#customerOptions">Customer options</Nav.Link>
-              {/* <NavDropdown title="Dropdown" id="basic-nav-dropdown">
+              <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.2">
                   Another action
@@ -34,7 +36,7 @@ const AdminPanel = () => {
                 <NavDropdown.Item href="#action/3.4">
                   Separated link
                 </NavDropdown.Item>
-              </NavDropdown> */}
+              </NavDropdown>
             </Nav>
           </Navbar.Collapse>
         </Container>

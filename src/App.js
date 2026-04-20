@@ -14,6 +14,7 @@ import MyProfile from "./components/MyProfile";
 import AdminPanel from "./components/AdminPanel";
 import ProtectedRoute from "./components/ProtectedRoute";
 import UserForm from "./components/UserForm";
+import UsersList from "./components/UsersList";
 
 
 // const router = createBrowserRouter(
@@ -55,6 +56,11 @@ function App() {
               <Route path="create-user" element={
                 <ProtectedRoute>
                   <UserForm />
+                </ProtectedRoute>
+              }></Route>
+              <Route path="users-list" element={
+                <ProtectedRoute>
+                  <UsersList />
                 </ProtectedRoute>
               }></Route>
             </Route>

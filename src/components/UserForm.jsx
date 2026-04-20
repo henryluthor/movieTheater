@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "./AuthProvider";
 import Spinner from "react-bootstrap/Spinner";
-import { useForm } from "react-hook-form";
 
 const UserForm = () => {
   const { user } = useAuth();
@@ -50,7 +49,7 @@ const UserForm = () => {
 
     var endpointToFetch = "";
     const urlRegisterCustomer = "https://localhost:7046/api/SystemUser/register-customer";
-    const urlCreateAdminUser = "https://localhost:7046/api/SystemUser/create-admin-user";
+    const urlCreateAdminUser = "https://localhost:7046/api/SystemUser/create-user";
 
     var requestInit;
 
