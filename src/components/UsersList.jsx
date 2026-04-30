@@ -2,6 +2,9 @@ import NoPermit from "./NoPermit";
 import { useAuth } from "./AuthProvider"
 import { useEffect, useState } from "react";
 import Spinner from "react-bootstrap/Spinner";
+import { FaEdit } from "react-icons/fa";
+// import Nav from "react-bootstrap/Nav";
+import { Link } from "react-router-dom";
 
 const UsersList = () => {
   const user = useAuth();
@@ -31,6 +34,17 @@ const UsersList = () => {
     }
   }
 
+
+  const handleEdit = async (id) => {
+    console.log("id is");
+    console.log(id);
+    var response = await fetch("https://localhost:7046/api/SystemUser/edit-user/" + id);
+    var responseJson = await response.json();
+
+    console.log("in userlist responseJson");
+    console.log(responseJson);
+  }
+
   
   
   return(
@@ -57,12 +71,24 @@ const UsersList = () => {
                 <thead>
                   <tr>
                     <th>Email</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {users.map((user, index) => (
-                    <tr key={index}>
+                  {users.map((user) => (
+                    <tr key={user.id}>
                       <td>{user.email}</td>
+                      <td>
+                        {/* <button
+                        onClick={() => handleEdit(user.id)}
+                        title="Edit user"
+                        aria-label="Edit user">
+                          <FaEdit></FaEdit>
+                        </button> */}
+
+                        <Link to={`${user.id}/edit`}>Editar</Link>
+                        
+                      </td>
                     </tr>
                   ))}
                 </tbody>

@@ -53,16 +53,25 @@ function App() {
               </ProtectedRoute>
             }>
               {/* Child routes */}
-              <Route path="create-user" element={
+              <Route path="users" element={
+                <ProtectedRoute>
+                  <UsersList />
+                </ProtectedRoute>
+              }>
+              </Route>
+
+              <Route path="users/new" element={
                 <ProtectedRoute>
                   <UserForm />
                 </ProtectedRoute>
               }></Route>
-              <Route path="users-list" element={
+
+              <Route path="users/:id/edit" element={
                 <ProtectedRoute>
-                  <UsersList />
+                  <UserForm />
                 </ProtectedRoute>
               }></Route>
+                           
             </Route>
             <Route path="*" element={<PageNotFound />}></Route>
           </Routes>

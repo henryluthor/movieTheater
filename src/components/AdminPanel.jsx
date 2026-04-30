@@ -21,8 +21,8 @@ const AdminPanel = () => {
               <Nav.Link href="#link">Link</Nav.Link>
               {isAdmin &&
               <NavDropdown title="Users">
-                <NavDropdown.Item as={Link} to="create-user">Create user</NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="users-list">Show users</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="users">Show users</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="users/new">Create user</NavDropdown.Item>                
               </NavDropdown>
               }
               <Nav.Link href="#customerOptions">Customer options</Nav.Link>
@@ -40,12 +40,12 @@ const AdminPanel = () => {
             </Nav>
           </Navbar.Collapse>
         </Container>
-    </Navbar>
+      </Navbar>
 
-    {/* Children components are renderized here */}
-    <main>
-      <Outlet />
-    </main>
+      {/* Children components are renderized here */}
+      <main>
+        <Outlet />
+      </main>
     </div>
   );
 }
