@@ -22,7 +22,11 @@ const UsersList = () => {
   const getUsers = async () => {
     
     try{
-      var response = await fetch("https://localhost:7046/api/SystemUser/");
+      var response = await fetch("https://localhost:7046/api/SystemUser/",{
+        method: "GET",
+        credentials: "include"
+      });
+      
       var responseJson = await response.json();      
       setUsers(responseJson);
     }
@@ -35,16 +39,10 @@ const UsersList = () => {
   }
 
 
-  const handleEdit = async (id) => {
-    console.log("id is");
-    console.log(id);
+  const handleEdit = async (id) => {    
     var response = await fetch("https://localhost:7046/api/SystemUser/edit-user/" + id);
     var responseJson = await response.json();
-
-    console.log("in userlist responseJson");
-    console.log(responseJson);
   }
-
   
   
   return(

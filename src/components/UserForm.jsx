@@ -7,7 +7,7 @@ import NoPermit from "./NoPermit";
 import { useParams, useNavigate  } from "react-router-dom";
 
 const UserForm = () => {
-  const { user } = useAuth();
+  const { user } = useAuth(); // Logged-in user
   const { id } = useParams(); // Captures the ":id" from the URL
   const isEdit = Boolean(id); // If there is an id this form will be used to edit
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ const UserForm = () => {
 
   const [userToEditLoading, setUserToEditLoading] = useState(true);
 
-  const [userPosting, setUserPosting] = useState(false);
+  const [userPosting, setUserPosting] = useState(false); // To check whether user is being submitted
 
   const handleChange = (event) => {    
     // const name = event.target.name;
@@ -59,7 +59,6 @@ const UserForm = () => {
     getRoles();
 
     if(isEdit){
-      // Aquí haces la llamada a tu API o buscas en tu estado global
       getUserToEdit(id);
     }
   },[id, isEdit]);
@@ -81,11 +80,11 @@ const UserForm = () => {
 
   const getUserToEdit = async (userToEditId) => {
     try{
-      var response = await fetch("https://localhost:7046/api/SystemUser/" + userToEditId);
+      var response = await fetch("https://localhost:7046/api/SystemUser/" + userToEditId, {
+        method: "GET",
+        credentials: "include"
+      });
       var responseJson = await response.json();
-
-      console.log("En getUserToEdit responseJson es");
-      console.log(responseJson);      
 
       setInputs({
         email: responseJson.email || "",
@@ -102,7 +101,7 @@ const UserForm = () => {
   }
 
   const returning = () => {
-    navigate("user-list"); // To return to user-list
+    navigate("user-list"); // To return to users page
   }
 
   const handleSubmit = async (ev) => {
@@ -116,52 +115,94 @@ const UserForm = () => {
     const urlUpdateCustomer = "https://localhost:7046/api/SystemUser/update-customer";
     const urlUpdateUser = "https://localhost:7046/api/SystemUser/update-user";
 
-    var requestInit;
+    var objectForBody = {
+      email : inputs.email
+    };
 
-    if(isAdmin){
-      if(isEdit){
-        // Is admin and mode is edit
-        endpointToFetch = urlUpdateUser;
+    var requestInit = {
+      headers: {"Content-type": "application/json"}
+    };
+
+    // if(isAdmin){
+    //   if(isEdit){
+    //     // Is admin and mode is edit
+    //     endpointToFetch = urlUpdateUser;
+    //   }
+    //   else{
+    //     // Is admin but mode is NOT edit
+    //     endpointToFetch = urlCreateUser;
+    //   }
+
+    //   requestInit = {
+    //     method: "POST",
+    //     credentials: "include",
+    //     headers: { "Content-type": "application/json" },
+    //     body: JSON.stringify({
+    //       email: inputs.email,
+    //       password: inputs.password,
+    //       roles: inputs.roles
+    //     })
+    //   }
+    // }
+    // else{
+    //   if(isEdit){
+    //     // Is NOT admin but mode is edit
+    //     endpointToFetch = urlUpdateCustomer;
+    //   }
+    //   else{
+    //     // Is NOT admin and mode is NOT edit
+    //     endpointToFetch = urlRegisterCustomer;
+    //   }
+
+    //   requestInit = {
+    //     method: "POST",
+    //     headers: { "Content-type": "application/json" },
+    //     body: JSON.stringify({
+    //       email: inputs.email,
+    //       password: inputs.password
+    //     })
+    //   }
+    // }
+
+    if (isAdmin){
+      requestInit.credentials = "include";
+      objectForBody.roles = inputs.roles;
+    }
+
+    if(isEdit){
+      requestInit.method = "PUT";
+      if (isAdmin){
+        endpointToFetch = urlUpdateUser + "/" + id;
+        // endpointToFetch = urlUpdateUser.concat(["/", {id}]);  
       }
       else{
-        // Is admin but mode is NOT edit
-        endpointToFetch = urlCreateUser;
-      }
-
-      requestInit = {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify({
-          email: inputs.email,
-          password: inputs.password,
-          roles: inputs.roles
-        })
+        endpointToFetch = urlUpdateCustomer;
       }
     }
     else{
-      if(isEdit){
-        // Is NOT admin but mode is edit
-        endpointToFetch = urlUpdateCustomer;
+      requestInit.method = "POST";
+      objectForBody.password = inputs.password;
+      if (isAdmin) {
+        endpointToFetch = urlCreateUser;        
       }
       else{
-        // Is NOT admin and mode is NOT edit
         endpointToFetch = urlRegisterCustomer;
       }
-
-      requestInit = {
-        method: "POST",
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify({
-          email: inputs.email,
-          password: inputs.password
-        })
-      }
     }
+
+    requestInit.body = JSON.stringify(objectForBody);
         
     try{
+      console.log("endpointToFetch:");
+      console.log(endpointToFetch);
+      console.log("requestInit");
+      console.log(requestInit);
+
       var response = await fetch(endpointToFetch, requestInit);
+      console.log("after posting user, response is");
+      console.log(response);
       var responseJson = await response.json();
+      
 
       // After saving, you return programmatically to the table
       //navigate("/admin/users-list")
@@ -175,16 +216,6 @@ const UserForm = () => {
   }
 
   
-  console.log("before return");
-
-  // console.log("isEdit");
-  // console.log(isEdit);
-
-  // console.log("id is:");
-  // console.log(id);
-  
-  console.log("inputs are:");
-  console.log(inputs);
 
   return(
     <>

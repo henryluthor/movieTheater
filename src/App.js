@@ -53,6 +53,8 @@ function App() {
               </ProtectedRoute>
             }>
               {/* Child routes */}
+              <Route path="complexes" element={<Complexes />}></Route>
+
               <Route path="users" element={
                 <ProtectedRoute>
                   <UsersList />

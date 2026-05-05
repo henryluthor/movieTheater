@@ -19,12 +19,20 @@ const AdminPanel = () => {
             <Nav className="me-auto">
               <Nav.Link href="#home">Home</Nav.Link>
               <Nav.Link href="#link">Link</Nav.Link>
-              {isAdmin &&
+              {isAdmin &&              
+              <>
+              <NavDropdown title="Complexes">
+                <NavDropdown.Item as={Link} to="complexes">Show complexes</NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="complexes/new">Create complex</NavDropdown.Item>
+              </NavDropdown>
+
               <NavDropdown title="Users">
                 <NavDropdown.Item as={Link} to="users">Show users</NavDropdown.Item>
                 <NavDropdown.Item as={Link} to="users/new">Create user</NavDropdown.Item>                
               </NavDropdown>
+              </>
               }
+              
               <Nav.Link href="#customerOptions">Customer options</Nav.Link>
               <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
