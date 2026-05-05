@@ -23,7 +23,6 @@ const UsersList = () => {
     
     try{
       var response = await fetch("https://localhost:7046/api/SystemUser/",{
-        method: "GET",
         credentials: "include"
       });
       

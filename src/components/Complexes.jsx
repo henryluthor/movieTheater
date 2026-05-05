@@ -7,7 +7,7 @@ const Complexes = () => {
   const [complexes, setComplexes] = useState([]);
   const [complexesLoading, setComplexesLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
-  const [complexSelected, setComplexSelected] = useState(null);
+  const [complexSelected, setComplexSelected] = useState("");
 
   useEffect(() => {
     getComplexes();
@@ -15,11 +15,20 @@ const Complexes = () => {
 
 
   const getComplexes = async () => {
+    // console.log("enterd getComplexes");
 
     try {
 
-      var complexes = await fetch(companyData.complexes_URL);
+      // console.log("url to fetch complexes");
+      // console.log(companyData.complexes_URL);
+
+      var complexes = await fetch(companyData.complexes_URL, {
+        credentials: "include"
+      });
+
       var complexesJson = await complexes.json();
+      // console.log("in getComplexes, complexesJson");
+      // console.log(complexesJson);      
 
       if(complexesJson.length > 0){
         setComplexes(complexesJson);
@@ -53,6 +62,9 @@ const Complexes = () => {
     // console.log(typeof(complexSelected));
   };
 
+  // console.log("before return complexes");
+  // console.log(complexes);
+
   return (
     <ComplexContext.Provider value={complexSelected}>
       <>
@@ -74,10 +86,8 @@ const Complexes = () => {
         <>
         {complexes.length > 0 ? (
           <>
-          <p>SI SE ENCONTRARON COMPLEXES</p>
-          <p>SHOWING COMPLEXES</p>
-          {complexes.map((complex) => (
-            <p>complex.name</p>
+          {complexes.map((complex, index) => (
+            <p key={index}>{complex.name}</p>
           ))}
           
           <select value={complexSelected} onChange={handleChange}>

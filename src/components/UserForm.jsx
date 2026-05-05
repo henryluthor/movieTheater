@@ -26,7 +26,7 @@ const UserForm = () => {
 
   const [userToEditLoading, setUserToEditLoading] = useState(true);
 
-  const [userPosting, setUserPosting] = useState(false); // To check whether user is being submitted
+  const [isSubmitting, setIsSubmitting] = useState(false); // To check whether user is being submitted
 
   const handleChange = (event) => {    
     // const name = event.target.name;
@@ -104,10 +104,10 @@ const UserForm = () => {
     navigate("user-list"); // To return to users page
   }
 
-  const handleSubmit = async (ev) => {
-    ev.preventDefault();
-
-    setUserPosting(true);
+  const handleSubmit = async (event) => {
+    
+    event.preventDefault();
+    setIsSubmitting(true);
 
     var endpointToFetch = "";
     const urlRegisterCustomer = "https://localhost:7046/api/SystemUser/register-customer";
@@ -211,7 +211,7 @@ const UserForm = () => {
       console.error("An error ocurred while attempting to create user. " + error.message);
     }
     finally{
-      setUserPosting(false);
+      setIsSubmitting(false);
     }
   }
 
@@ -290,7 +290,7 @@ const UserForm = () => {
             )
           )}
 
-          <button type="submit" className="btn btn-primary" disabled={userPosting}>{userPosting ? "Posting user..." : "Submit"}</button>
+          <button type="submit" className="btn btn-primary" disabled={isSubmitting}>{isSubmitting ? "Posting user..." : "Submit"}</button>
           <button
           type="button"
           className="btn btn-secondary"
