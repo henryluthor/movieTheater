@@ -1,31 +1,40 @@
 import { useState } from "react";
 
+// To know what complex you are editing once the form replaces the table you use the hook useParams
+import { useParams } from "react-router-dom";
+
 const ComplexForm = () => {
 
   const [inputs, setInputs] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState({}); // State to save API errors
+  const [errorMessagesFromApi, setErrorMessagesFromApi] = useState([""]);
+  const {id} = useParams(); // Captures the ":id" from the URL
+  const isEdit = Boolean(id); // If there is an id this form will be used to edit
+
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     setInputs((values) => ({...values, [name]: value}));
-  }
 
+    // If there is an error for this field, we remove it from the state
+    if(errors.Name){
+      setErrors((prevErrors) => {
+        const newErrors = {...prevErrors};
+        delete newErrors.Name; // Remove only the error from this field
+        return newErrors;
+      })
+    }
+  }
 
 
   const handleSubmit = async (event) => {
 
     event.preventDefault();
     setIsSubmitting(true);
+    setErrors({}); // Clean previous errors
     
     try{
-      console.log("after try, inputs.complexName");
-      console.log(inputs.complexName);
-      console.log(typeof(inputs.complexName));
-
-      const urlCreateUser =      "https://localhost:7046/api/SystemUser/create-user";
-
-      const xxxx =               "https://localhost:7046/api/Complex";
-
       var response = await fetch("https://localhost:7046/api/Complex", {
         method: "POST",
         headers: {"Content-type": "application/json"},
@@ -33,12 +42,22 @@ const ComplexForm = () => {
         body: JSON.stringify(inputs)
       });
 
-      console.log("complex submit response");
-      console.log(response);
+
+      if(!response.ok){
+        // If it is 400, ASP.NET sends an object with the details in the body
+        if(response.status == 400){
+          const data = await response.json();
+
+          setErrorMessagesFromApi(data);
+          
+          // ASP.NET Core puts validation errors in data.errors
+          setErrors(data.errors || {});
+        }
+        return;
+      }
 
       var responseJson = await response.json()
-      console.log("Al crear complex responseJson");
-      console.log(responseJson);
+      
     }
     catch(error){
       console.error("An error ocurred while attempting to create complex. " + error.message);
@@ -52,15 +71,33 @@ const ComplexForm = () => {
   return(
     <div>
       <form onSubmit={handleSubmit}>
-        <label className="form-label" htmlFor="complexName">Complex name</label>
+        <label className="form-label" htmlFor="name">Complex name</label>
         <input
-        className="form-control"
+        className={errors.Name ? "input-error" : "form-control"} // "input-error" CSS class for red border
         id="name"
         name="name"
         type="text"
+        value={inputs.name || ""}
+        required
+        maxLength={50}
         onChange={handleChange}
         ></input>
-        <button className="btn btn-primary">Submit</button>
+
+        {/* Display error messages for input Name */}
+        {errors.Name && (
+          <div style={{ fontSize: "0.8rem"}}>
+            {errors.Name.map( (error, index) => (
+              <p key={index}>{error}</p>
+            ))}
+          </div>
+        )}
+
+        {errorMessagesFromApi && (
+          errorMessagesFromApi.map((error, index) => (
+            <p key={index}>{error}</p>
+          ))
+        )}
+        <button className="btn btn-primary" disabled={isSubmitting}>{isSubmitting ? "Posting complex..." : "Submit"}</button>
       </form>
     </div>
   );

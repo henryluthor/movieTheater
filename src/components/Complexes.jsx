@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import companyData from "../companyData.json";
+import { FaEdit } from "react-icons/fa";
 
 const ComplexContext = createContext();
 
@@ -10,26 +11,23 @@ const Complexes = () => {
   const [complexSelected, setComplexSelected] = useState("");
 
   useEffect(() => {
+    // Delaying useEffect manually for testing
+    // setTimeout(getComplexes, 3000);
+
     getComplexes();
   }, []);
 
 
   const getComplexes = async () => {
-    // console.log("enterd getComplexes");
 
     try {
-
-      // console.log("url to fetch complexes");
-      // console.log(companyData.complexes_URL);
 
       var complexes = await fetch(companyData.complexes_URL, {
         credentials: "include"
       });
 
       var complexesJson = await complexes.json();
-      // console.log("in getComplexes, complexesJson");
-      // console.log(complexesJson);      
-
+      
       if(complexesJson.length > 0){
         setComplexes(complexesJson);
       }      
@@ -62,8 +60,24 @@ const Complexes = () => {
     // console.log(typeof(complexSelected));
   };
 
-  // console.log("before return complexes");
-  // console.log(complexes);
+
+  const handleEdit = async (id) => {
+    try{
+      var response = await fetch("https://localhost:7046/api/Complex/" + id, {
+        credentials: "include"
+      });
+
+      var responseJson = await response.json();
+      console.log("complex recibido");
+      console.log(responseJson);
+    }
+    catch{
+      //
+    }
+  }
+
+  console.log("complexes");
+  console.log(complexes);
 
   return (
     <ComplexContext.Provider value={complexSelected}>
@@ -86,9 +100,32 @@ const Complexes = () => {
         <>
         {complexes.length > 0 ? (
           <>
-          {complexes.map((complex, index) => (
-            <p key={index}>{complex.name}</p>
-          ))}
+          <table>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Edit</th>
+              </tr>
+            </thead>
+            <tbody>
+              {complexes.map((complex) => (
+                <tr key={complex.idComplex}>
+                  <td>{complex.name}</td>
+                  <td>
+                    <button
+                    onClick={handleEdit(complex.idComplex)}
+                    title="Edit complex"
+                    aria-label="Edit complex"
+                    >
+                      <FaEdit></FaEdit>
+                    </button>
+                  </td>
+                </tr>
+                // <p key={index}>{complex.name}</p>
+              ))}
+            </tbody>
+          </table>
+          
           
           <select value={complexSelected} onChange={handleChange}>
             {complexes.map((complex, index) => (

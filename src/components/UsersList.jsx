@@ -11,6 +11,7 @@ const UsersList = () => {
 
   const [usersLoading, setUsersLoading] = useState(true);
   const [users, setUsers] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
     // Delaying useEffect manually for testing
@@ -31,6 +32,7 @@ const UsersList = () => {
     }
     catch(error){
       console.error("An error ocurred while attempting to fetch users. " + error.message);
+      setErrorMessage("An error ocurred while attempting to fetch users. " + error.message);
     }
     finally{
       setUsersLoading(false);
@@ -48,17 +50,21 @@ const UsersList = () => {
     <>
     {user? (
       <div>
-        {usersLoading ? (
+        { errorMessage || usersLoading ? (
           <div>
-            <Spinner
-            as="span"
-            animation="border"
-            size="sm"
-            role="status"
-            aria-hidden="true"
-            className="me-2"
-            />
-            Loading users...
+            { errorMessage || (
+              <div>
+                <Spinner
+                as="span"
+                animation="border"
+                size="sm"
+                role="status"
+                aria-hidden="true"
+                className="me-2"
+                />
+                Loading users...
+              </div>
+            )}
           </div>
         ):(
             users? (
