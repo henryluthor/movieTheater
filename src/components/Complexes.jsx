@@ -1,6 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import companyData from "../companyData.json";
 import { FaEdit } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { Spinner } from "react-bootstrap";
 
 const ComplexContext = createContext();
 
@@ -68,16 +70,13 @@ const Complexes = () => {
       });
 
       var responseJson = await response.json();
-      console.log("complex recibido");
-      console.log(responseJson);
     }
     catch{
       //
     }
   }
 
-  console.log("complexes");
-  console.log(complexes);
+  
 
   return (
     <ComplexContext.Provider value={complexSelected}>
@@ -86,13 +85,15 @@ const Complexes = () => {
         <div>
           {errorMessage || (
             <div>
-              <button className="btn btn-primary" type="button" disabled>
-                <span
-                  className="spinner-border spinner-border-sm"
-                  aria-hidden="true"
-                ></span>
-                <span role="status">Loading complexes...</span>
-              </button>
+              <Spinner
+              as="span"
+              animation="border"
+              size="sm"
+              role="status"
+              aria-hidden="true"
+              className="me-2"
+              />
+              Loading complexes...
             </div>
           )}
         </div>
@@ -112,16 +113,17 @@ const Complexes = () => {
                 <tr key={complex.idComplex}>
                   <td>{complex.name}</td>
                   <td>
-                    <button
+                    {/* <button
                     onClick={handleEdit(complex.idComplex)}
                     title="Edit complex"
                     aria-label="Edit complex"
                     >
                       <FaEdit></FaEdit>
-                    </button>
+                    </button> */}
+
+                    <Link to={`${complex.idComplex}/edit`}>Edit</Link>
                   </td>
                 </tr>
-                // <p key={index}>{complex.name}</p>
               ))}
             </tbody>
           </table>

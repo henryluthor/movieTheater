@@ -8,25 +8,26 @@ import { useParams, useNavigate  } from "react-router-dom";
 
 const UserForm = () => {
   const { user } = useAuth(); // Logged-in user
-  const { id } = useParams(); // Captures the ":id" from the URL
-  const isEdit = Boolean(id); // If there is an id this form will be used to edit
-  const navigate = useNavigate();
-
   // To know if logged-in user is Admin
   const isAdmin = user.roles.some(role => role.toLowerCase() === "admin");
-  
+
   const [inputs, setInputs] = useState({
     email: "",
     password: "",
     roles: ["Customer"]
   });
-  
+
   const [rolesLoading, setRolesLoading] = useState(true);
   const [roles, setRoles] = useState([]);
 
-  const [userToEditLoading, setUserToEditLoading] = useState(true);
+  const { id } = useParams(); // Captures the ":id" from the URL
+  const isEdit = Boolean(id); // If there is an id this form will be used to edit
+  const [isUserToEditLoading, setIsUserToEditLoading] = useState(true);
+  const navigate = useNavigate();  
 
   const [isSubmitting, setIsSubmitting] = useState(false); // To check whether user is being submitted
+
+  
 
   const handleChange = (event) => {    
     // const name = event.target.name;
@@ -96,7 +97,7 @@ const UserForm = () => {
       console.error("An error ocurred while attempting to get user data for edition. " + error.message);
     }
     finally{
-      setUserToEditLoading(false)
+      setIsUserToEditLoading(false)
     }
   }
 
@@ -121,48 +122,7 @@ const UserForm = () => {
 
     var requestInit = {
       headers: {"Content-type": "application/json"}
-    };
-
-    // if(isAdmin){
-    //   if(isEdit){
-    //     // Is admin and mode is edit
-    //     endpointToFetch = urlUpdateUser;
-    //   }
-    //   else{
-    //     // Is admin but mode is NOT edit
-    //     endpointToFetch = urlCreateUser;
-    //   }
-
-    //   requestInit = {
-    //     method: "POST",
-    //     credentials: "include",
-    //     headers: { "Content-type": "application/json" },
-    //     body: JSON.stringify({
-    //       email: inputs.email,
-    //       password: inputs.password,
-    //       roles: inputs.roles
-    //     })
-    //   }
-    // }
-    // else{
-    //   if(isEdit){
-    //     // Is NOT admin but mode is edit
-    //     endpointToFetch = urlUpdateCustomer;
-    //   }
-    //   else{
-    //     // Is NOT admin and mode is NOT edit
-    //     endpointToFetch = urlRegisterCustomer;
-    //   }
-
-    //   requestInit = {
-    //     method: "POST",
-    //     headers: { "Content-type": "application/json" },
-    //     body: JSON.stringify({
-    //       email: inputs.email,
-    //       password: inputs.password
-    //     })
-    //   }
-    // }
+    };    
 
     if (isAdmin){
       requestInit.credentials = "include";
@@ -193,16 +153,8 @@ const UserForm = () => {
     requestInit.body = JSON.stringify(objectForBody);
         
     try{
-      console.log("endpointToFetch:");
-      console.log(endpointToFetch);
-      console.log("requestInit");
-      console.log(requestInit);
-
       var response = await fetch(endpointToFetch, requestInit);
-      console.log("after posting user, response is");
-      console.log(response);
-      var responseJson = await response.json();
-      
+      var responseJson = await response.json();      
 
       // After saving, you return programmatically to the table
       //navigate("/admin/users-list")
@@ -230,7 +182,6 @@ const UserForm = () => {
           name="email"
           value={inputs.email || ""}
           onChange={handleChange}
-          // defaultValue={initialData?.email}
           ></input>
 
           {!isEdit && (

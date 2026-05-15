@@ -40,7 +40,7 @@ const UsersList = () => {
   }
 
 
-  const handleEdit = async (id) => {    
+  const handleEdit = async (id) => {
     var response = await fetch("https://localhost:7046/api/SystemUser/edit-user/" + id);
     var responseJson = await response.json();
   }

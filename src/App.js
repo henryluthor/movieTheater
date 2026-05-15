@@ -58,6 +58,8 @@ function App() {
 
               <Route path="complexes/new" element={<ComplexForm />}></Route>
 
+              <Route path="complexes/:id/edit" element={<ComplexForm />}></Route>
+
               <Route path="users" element={
                 <ProtectedRoute>
                   <UsersList />
