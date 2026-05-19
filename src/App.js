@@ -16,6 +16,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import UserForm from "./components/UserForm";
 import UsersList from "./components/UsersList";
 import ComplexForm from "./components/ComplexForm";
+import Complex from "./components/Complex";
 
 
 // const router = createBrowserRouter(
@@ -55,6 +56,8 @@ function App() {
             }>
               {/* Child routes */}
               <Route path="complexes" element={<Complexes />}></Route>
+
+              <Route path="Complexes/:id" element={<Complex />}></Route>
 
               <Route path="complexes/new" element={<ComplexForm />}></Route>
 

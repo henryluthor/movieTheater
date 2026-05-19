@@ -111,7 +111,11 @@ const Complexes = () => {
             <tbody>
               {complexes.map((complex) => (
                 <tr key={complex.idComplex}>
-                  <td>{complex.name}</td>
+                  <td>
+                    <Link to={`${complex.idComplex}`}>
+                    {complex.name}
+                    </Link>
+                  </td>
                   <td>
                     {/* <button
                     onClick={handleEdit(complex.idComplex)}
@@ -129,13 +133,13 @@ const Complexes = () => {
           </table>
           
           
-          <select value={complexSelected} onChange={handleChange}>
+          {/* <select value={complexSelected} onChange={handleChange}>
             {complexes.map((complex, index) => (
               <option key={index} value={complex.id}>
                 {complex.name}
               </option>
             ))}
-          </select>
+          </select> */}
           </>
         ):(
           <p>COMPLEXES NOT FOUND</p>

@@ -31,8 +31,7 @@ const ComplexForm = () => {
       var response = await fetch("https://localhost:7046/api/Complex/" + complexToEditId,{
         method: "GET",
         credentials: "include"
-      }
-      );
+      });
       var responseJson = await response.json();
 
       setInputs({
