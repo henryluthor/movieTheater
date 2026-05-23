@@ -6,6 +6,7 @@ const LoginForm = () => {
   const { setUser } = useAuth();
   const [inputs, setInputs] = useState([]);
   const [loginLoading, setLoginLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleChange = (event) => {
     const name = event.target.name;
@@ -38,6 +39,7 @@ const LoginForm = () => {
     catch(error){
       // TO DO: SHOW ERROR IN DOM TO NOTIFY USER OF ERROR AT LOGIN
       console.error("An error ocurred while attempting to login. " + error.message);
+      setErrorMessage("An error ocurred while attempting to login. " + error.message)
     }
     finally{
       setLoginLoading(false);
@@ -103,6 +105,11 @@ const LoginForm = () => {
         ></input>
         <button className="btn btn-primary m-3" disabled={loginLoading}>{ loginLoading ? "Making login..." : "Login"}</button>
       </form>
+      {errorMessage && (
+        <>
+        <p className="error-message">{errorMessage}</p>
+        </>
+      )}
       <p>Not registered? Create an account here</p>
     </div>
   )

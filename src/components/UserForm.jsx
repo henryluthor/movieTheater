@@ -19,6 +19,7 @@ const UserForm = () => {
 
   const [rolesLoading, setRolesLoading] = useState(true);
   const [roles, setRoles] = useState([]);
+  const [errorMessages, setErrorMessages] = useState([""]);
 
   const { id } = useParams(); // Captures the ":id" from the URL
   const isEdit = Boolean(id); // If there is an id this form will be used to edit
@@ -73,6 +74,9 @@ const UserForm = () => {
     }
     catch(error){
       console.error("An error ocurred while attempting to fetch roles. " + error.message);
+      setErrorMessages(prevErrors => [...prevErrors,
+        "An error ocurred while attempting to fetch roles. " + error.message
+      ])
     }
     finally{
       setRolesLoading(false);
@@ -95,6 +99,9 @@ const UserForm = () => {
     }
     catch(error){
       console.error("An error ocurred while attempting to get user data for edition. " + error.message);
+      setErrorMessages(prevErrors => [...prevErrors,
+        "An error ocurred while attempting to get user data for edition. " + error.message
+      ])
     }
     finally{
       setIsUserToEditLoading(false)

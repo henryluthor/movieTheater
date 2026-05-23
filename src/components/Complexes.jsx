@@ -142,7 +142,7 @@ const Complexes = () => {
           </select> */}
           </>
         ):(
-          <p>COMPLEXES NOT FOUND</p>
+          <p>NO COMPLEXES FOUND.</p>
         )}
         </>
       )}

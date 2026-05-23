@@ -2,7 +2,7 @@
     "companyName": "My Movie Theater",
     "API_URL": "https://localhost:7046/api/Movies",
     "login_URL": "https://localhost:7046/api/Login",
-    "complexes_URL": "https://localhost:7046/api/Complex",
+    "complexes_URL": "https://localhost:7046/api/complexes",
     "imgSrcForPosterFromTMDB": "https://image.tmdb.org/t/p/original",
     "adminRoleId": 1
 }
